@@ -1,0 +1,27 @@
+#pragma once
+#include "Common.h"
+#include "Events.h"
+#include "Entity.h"
+
+//Singleton Design Pattern
+class Entity;
+class IEvent;
+
+class IEventManager
+{
+public:
+	static IEventManager* GetInstance();
+
+	~IEventManager();
+	void AddListener(std::string eventType, Entity* regEntity);
+	void RemoveListener(std::string eventType, Entity* regEntity);
+	void RemoveAllListenersFromEnt(Entity* regEntity);
+	void QueueEvent(Event::IEvent* newEvent);
+	void Update();
+
+private:
+	IEventManager();
+	static IEventManager* m_pInstance;
+	std::queue<Event::IEvent*, std::deque<Event::IEvent*>> mainEventQueue;
+	std::map<std::string, std::vector<Entity*>> listenerMap;
+};
