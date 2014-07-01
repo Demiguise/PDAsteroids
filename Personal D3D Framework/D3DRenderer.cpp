@@ -23,6 +23,8 @@ D3DRenderer::~D3DRenderer()
 	ReleaseCOM(md3dDevice);
 	ReleaseCOM(mDeviceContext);
 	ReleaseCOM(mSwapChain);
+	IEventManager::GetInstance()->RemoveAllListenersFromEnt(receiver);
+	delete receiver;
 }
 
 bool D3DRenderer::Init()
@@ -208,6 +210,29 @@ void D3DRenderer::UpdateScene(const EnMatrix4x4& camPos, const EnVector3& target
 	//mCamViewMatrix = ConvertToXMMatrix(camPos);
 }
 
+bool D3DRenderer::OnEvent(Event::IEvent* e)
+{
+	if (e->eType == "RenderableObject Created")
+	{
+		CRenderableObject* newRenderableObject = static_cast<CRenderableObject*>(static_cast<Event::EntityEvent*>(e)->entity);
+		mBufferManager->LinkEntities(newRenderableObject, newRenderableObject->mesh.semanticName);
+		return true;
+	}
+	else if (e->eType == "RenderableObject Destroyed")
+	{
+		CRenderableObject* destroyedRenderableObject = static_cast<CRenderableObject*>(static_cast<Event::EntityEvent*>(e)->entity);
+		mBufferManager->RemoveEntity(destroyedRenderableObject);
+		return true;
+	}
+	else if (e->eType == "Asteroid Activated")
+	{
+		CRenderableObject* activatedAsteroid = static_cast<CRenderableObject*>(static_cast<Event::EntityEvent*>(e)->entity);
+		mBufferManager->LinkEntities(activatedAsteroid, activatedAsteroid->mesh.semanticName);
+		return false;
+	}
+	return false;
+}
+
 void D3DRenderer::DrawScene()
 {
 	std::vector<packedBufferData> sceneData = mBufferManager->GrabSceneBuffers();
@@ -245,14 +270,9 @@ void D3DRenderer::DrawScene()
 	mSwapChain->Present(0,0);
 }
 
-void D3DRenderer::CreateBuffer(CRenderableObject* newEnt)
+void D3DRenderer::CreateBuffer(ModelData model, std::string name)
 {
-	mBufferManager->InitNewBuffer(newEnt);
-}
-
-void D3DRenderer::DestroyBuffer(CRenderableObject* entity)
-{
-
+	mBufferManager->InitNewBuffer(model, name);
 }
 
 XMMATRIX D3DRenderer::BuildWVPMatrix(EnMatrix4x4& entWorldMatrix, XMMATRIX& view, XMMATRIX& proj)

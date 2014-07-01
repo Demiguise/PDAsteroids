@@ -1,25 +1,34 @@
 #include "PhysicsManager.h"
 
-PhysicsManager* PhysicsManager::m_pInstance = 0;
-
-PhysicsManager* PhysicsManager::GetInstance()
+//PhysicsEventReceiver Class
+PhysicsEventReceiver::PhysicsEventReceiver(PhysicsManager* parentPhysics)
 {
-	if (!m_pInstance)
-	{
-		m_pInstance = new PhysicsManager();
-	}
-	return m_pInstance;
+	parent = parentPhysics;
 }
 
+PhysicsEventReceiver::PhysicsEventReceiver() {}
+PhysicsEventReceiver::~PhysicsEventReceiver() {}
+
+bool PhysicsEventReceiver::Receive(Event::IEvent* e)
+{
+	return parent->OnEvent(e);
+}
+
+//PhysicsManager Class
 PhysicsManager::PhysicsManager()
 {
 	gravAcceleration = 9.81f; //ms^-2
 	LoadColliders();
+	receiver = new PhysicsEventReceiver(this);
+	IEventManager::GetInstance()->AddListener("PhysicsObj Created", receiver);
+	IEventManager::GetInstance()->AddListener("PhysicsObj Destroyed", receiver);
 	GameLog::GetInstance()->Log(DebugChannel::Physics, DebugLevel::Normal, "[Physics] Initialisation Complete.");
 }
 
 PhysicsManager::~PhysicsManager()
 {
+	IEventManager::GetInstance()->RemoveAllListenersFromEnt(receiver);
+	delete receiver;
 }
 
 void PhysicsManager::LoadColliders()
@@ -31,21 +40,34 @@ void PhysicsManager::LoadColliders()
 }
 
 void PhysicsManager::RegisterEntity(Entity* entity, ColliderType rbType,
-									float mass)
+									float mass, float scale)
 {
 	sceneCollideables.push_back(entity);
 	switch (rbType)
 	{
 	case ColliderType::Box:
-		entity->rigidBody = new BoxCollider(colliderModels[0], mass, entity);
+		entity->SetRigidBody(new BoxCollider(ScaleRBModel(colliderModels[0], scale), mass, entity));
 		break;
 	case ColliderType::Planar:
-		entity->rigidBody = new PlanarCollider(colliderModels[3], mass, entity);
+		entity->SetRigidBody(new PlanarCollider(ScaleRBModel(colliderModels[3], scale), mass, entity));
+		break;
+	case ColliderType::Sphere:
+		entity->SetRigidBody(new SphereCollider(ScaleRBModel(colliderModels[2], scale), mass, entity));
 		break;
 	default:
-		entity->rigidBody = new RigidBody(mass, entity);
+		entity->SetRigidBody(new RigidBody(mass, entity));
 		break;
 	}
+}
+
+ModelData PhysicsManager::ScaleRBModel(ModelData rbModel, const float& scale)
+{
+	ModelData scaledModel = rbModel;
+	for (UINT i = 0 ; i < rbModel.vData.size() ; ++i)
+	{
+		scaledModel.vData[i].position = Util::ScalarProduct3D(rbModel.vData[i].position, scale);
+	}
+	return scaledModel;
 }
 
 void PhysicsManager::RemoveEntity(Entity* entity)
@@ -54,6 +76,7 @@ void PhysicsManager::RemoveEntity(Entity* entity)
 	{
 		if (sceneCollideables[i] == entity)
 		{
+			delete entity->rigidBody;
 			sceneCollideables.erase(sceneCollideables.begin() + i);
 		}
 	}
@@ -80,6 +103,23 @@ void PhysicsManager::Update(const float& dt)
 	CollisionUpdate(dt);
 }
 
+bool PhysicsManager::OnEvent(Event::IEvent* e)
+{
+	if (e->eType == "PhysicsObj Created")
+	{
+		Event::PhysicsCreationEvent* event = static_cast<Event::PhysicsCreationEvent*>(e);
+		RegisterEntity(event->entity, event->rbType, event->mass, event->scale);
+		return true;
+	}
+	else if (e->eType == "PhysicsObj Destroyed")
+	{
+		Event::PhysicsCreationEvent* event = static_cast<Event::PhysicsCreationEvent*>(e);
+		RemoveEntity(event->entity);
+		return true;
+	}
+	return false;
+}
+
 void PhysicsManager::CollisionUpdate(const float& dt)
 {
 	//First off, let's begin our coarse collision detection. This tests for only intersections in each frame, no fancy stuff.
@@ -103,15 +143,18 @@ std::vector<CollisionPair> PhysicsManager::CoarseCollisionDetection(const std::d
 		{
 			if ((i != j) && (curEnt->TestAABBIntersection(sceneCollideables[j]->AABB))) 
 			{ //Collision between two entities has occured.
-				bool collisionIsUnique = true;
-				for (UINT k = 0 ; k < possibleCollisions.size() ; ++k)
+				if (curEnt->rigidBody->isAwake && sceneCollideables[j]->rigidBody->isAwake)
 				{
-					if((possibleCollisions[k].a == sceneCollideables[j]) && (possibleCollisions[k].b == curEnt ))
-					{ //Already a collision between these two entities in the system, ignore it.
-						collisionIsUnique = false;
+					bool collisionIsUnique = true;
+					for (UINT k = 0 ; k < possibleCollisions.size() ; ++k)
+					{
+						if((possibleCollisions[k].a == sceneCollideables[j]) && (possibleCollisions[k].b == curEnt ))
+						{ //Already a collision between these two entities in the system, ignore it.
+							collisionIsUnique = false;
+						}
 					}
+					if (collisionIsUnique) { possibleCollisions.push_back(CollisionPair(curEnt, sceneCollideables[j])); }
 				}
-				if (collisionIsUnique) { possibleCollisions.push_back(CollisionPair(curEnt, sceneCollideables[j])); }
 			}
 		}
 	}
@@ -127,6 +170,8 @@ void PhysicsManager::GenerateContacts(std::vector<CollisionPair>& coarseCollisio
 	}
 }
 
+//Our game doesn't actually need this as we aren't going to be requiring any actual collsion resolutions.
+//Thus this code will merely ensure that the collision is valid and propagate the requisite events.
 void PhysicsManager::ResolveCollisions(std::vector<CollisionPair>& possibleCollisions, const float& dt)
 {
 	//This only considers the first contact data in the collision pair for the moment.
@@ -135,20 +180,17 @@ void PhysicsManager::ResolveCollisions(std::vector<CollisionPair>& possibleColli
 		if (possibleCollisions[i].data == 0 || 
 			possibleCollisions[i].a->rigidBody->isAwake == false ||
 			possibleCollisions[i].b->rigidBody->isAwake == false) { continue; }
+		if (possibleCollisions[i].a->name == possibleCollisions[i].b->name) { continue; }
 		Entity* entA = possibleCollisions[i].a;
 		Entity* entB = possibleCollisions[i].b;
 
-		float restitution = 1.0f; //Controls the elasticity of the collisions, 0 = inelastic & 1 = elastic.
-		float seperatingVelocity = (entA->velocity -  entB->velocity).ADot(possibleCollisions[i].data->contacts[0]->contactNormal);
-		float deltaVelocity = (-seperatingVelocity * restitution) - seperatingVelocity;
-		float totalInverseMass = 1.0f/(entA->rigidBody->mass) + 1.0f/(entB->rigidBody->mass);
-		float impulse = deltaVelocity / totalInverseMass;
-		EnVector3 impulsePerIMass = Util::ScalarProduct3D(possibleCollisions[i].data->contacts[0]->contactNormal, impulse);
+		Event::CollisionEvent* e = new Event::CollisionEvent();
+		e->eType = "Collision Event";
+		e->entityA = entA;
+		e->entityB = entB;
+		IEventManager::GetInstance()->QueueEvent(e);
 
-		entA->velocity += Util::ScalarProduct3D(impulsePerIMass, 1/entA->rigidBody->mass);
-		entB->velocity += Util::ScalarProduct3D(impulsePerIMass, 1/-entB->rigidBody->mass);
-		entA->rigidBody->isAwake = entB->rigidBody->isAwake = false;
-		GameLog::GetInstance()->Log(DebugChannel::Physics, DebugLevel::Normal, "[Physics] %s will collide with %s next frame.", entA->name.c_str(), entB->name.c_str());
+		GameLog::GetInstance()->Log(DebugChannel::Physics, DebugLevel::Normal, "[Physics] %s has collided with %s.", entA->name.c_str(), entB->name.c_str());
 	}
 }
 

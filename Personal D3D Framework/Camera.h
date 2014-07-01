@@ -25,7 +25,6 @@ private:
 	void AddListeners();
 	void RemoveListener(std::string eventType);
 	void Init();
-	UINT uID;
 	EnVector2 curMousePosition;
 };
 

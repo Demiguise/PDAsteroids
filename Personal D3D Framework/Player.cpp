@@ -27,46 +27,63 @@ Player::Player(ModelData newMesh)
 Player::~Player()
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
-	eventMan->RemoveAllListenersFromEnt(this);
+	eventMan->RemoveAllListenersFromEnt(receiver);
 }
 
 void Player::Init()
 {
 	name = "Player";
-	SceneManager::GetInstance()->RegisterEntity(this, uID);
-	PhysicsManager::GetInstance()->RegisterEntity(this, ColliderType::Planar, 1);
+	
+	Event::PhysicsCreationEvent* e = new Event::PhysicsCreationEvent();
+	e->eType = "PhysicsObj Created";
+	e->entity = this;
+	e->mass = 1.0f;
+	e->scale = 1.0f;
+	e->rbType = ColliderType::Planar;
+	IEventManager::GetInstance()->QueueEvent(e);
 
+	//Init all projectiles in the pool to this one type;
+	projectilePool.reserve(MAX_PLAYER_PROJECTILES);
+	for (UINT i = 0 ; i < MAX_PLAYER_PROJECTILES ; ++i)
+	{
+		projectilePool.push_back(new Projectile(FileManager::GetInstance()->LoadModelData("Models/Projectile.line", FileType::LineFile)));
+		projectilePool[i]->name = "Projectile";
+	}
+	
+	maxReloadTime = 0.3f;
 	AddListeners();
 }
 
 void Player::AddListeners()
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
-	eventMan->AddListener("UserKeysActive", this);
-	eventMan->AddListener("Collision", this);
+	eventMan->AddListener("UserKeysActive", receiver);
+	eventMan->AddListener("Collision", receiver);
 }
 
 void Player::RemoveListener(std::string eventType)
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
-	eventMan->RemoveListener(eventType, this);
+	eventMan->RemoveListener(eventType, receiver);
 }
 
 void Player::Update()
 {
-	UpdateQuaternion();
-	UpdateLocalToWorldMatrix();
-	if(rigidBody != 0)
-	{
-		rigidBody->ReCalculateAABB(AABB);
-	}
+	Entity::Update();
+	projectileHelper = EnVector3(0.0f, 1.8f, 0.0f).MatrixMult4x4(localToWorld);
+	if (curReloadTime > 0.0f) { curReloadTime -= GAME_STEP; }
 }
 
 void Player::FireShot()
 {
-	Projectile* newShot = new Projectile(	FileManager::GetInstance()->LoadModelData("Models/Ship.line", FileType::LineFile),
-											position);
-	
+  	for (UINT i = 0 ; i < MAX_PLAYER_PROJECTILES ; ++i)
+	{
+		if(!projectilePool[i]->active)
+		{
+			projectilePool[i]->OnActivated(projectileHelper, GetLocalAxis(1));
+			return;
+		}
+	}
 }
 
 bool Player::OnEvent(Event::IEvent* e)
@@ -85,17 +102,21 @@ bool Player::OnEvent(Event::IEvent* e)
 				rotation += EnVector3(0.0f, 0.0f, 3.0f);
 				break;
 			case GameKey::S:
-				AddForce(GetLocalAxis(1) , -10);
+				AddForce(GetLocalAxis(1) , -15);
 				break;
 			case GameKey::W:
-				AddForce(GetLocalAxis(1), 10);
+				AddForce(GetLocalAxis(1), 15);
 				break;
 			case GameKey::SPACE:
-				FireShot();
+				if (curReloadTime <= 0.0f)
+				{
+					FireShot();
+					curReloadTime = maxReloadTime;
+				}
 				break;
 			}
-		}
-		return true;
+		} 
+		return false;
 	}
 	else if(e->eType == "Collision")
 	{

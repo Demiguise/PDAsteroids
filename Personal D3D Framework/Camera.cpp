@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(EnVector3 initPos, EnVector3 initRot) 
+Camera::Camera(EnVector3 initPos, EnVector3 initRot)
 {
 	position = initPos;
 	rotation = initRot;
@@ -25,12 +25,11 @@ Camera::Camera()
 Camera::~Camera()
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
-	eventMan->RemoveAllListenersFromEnt(this);
+	eventMan->RemoveAllListenersFromEnt(receiver);
 }
 
 void Camera::Init()
 {
-	SceneManager::GetInstance()->RegisterEntity(this, uID);
 	rigidBody = 0;
 	mouseSensitivity = 0.15f;
 	invertY = false;
@@ -43,15 +42,15 @@ void Camera::Init()
 void Camera::AddListeners()
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
-	eventMan->AddListener("UserMouseMove", this);
-	eventMan->AddListener("UserKeyPress", this);
-	eventMan->AddListener("UserKeyRelease", this);
+	eventMan->AddListener("UserMouseMove", receiver);
+	eventMan->AddListener("UserKeyPress", receiver);
+	eventMan->AddListener("UserKeyRelease", receiver);
 }
 
 void Camera::RemoveListener(std::string eventType)
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
-	eventMan->RemoveListener(eventType, this);
+	eventMan->RemoveListener(eventType, receiver);
 }
 
 void Camera::Update()

@@ -8,7 +8,7 @@
 
 struct bufferData
 {
-	
+	std::string semanticName;
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
 	D3D11_PRIMITIVE_TOPOLOGY topologyType;

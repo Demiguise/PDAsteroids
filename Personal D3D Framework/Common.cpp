@@ -554,6 +554,7 @@ Quaternion operator* (Quaternion lhs, const Quaternion& rhs)
 // Utilities that I might find useful
 namespace Util
 {
+
 	EnVector2 ScalarProduct2D(const EnVector2& v, const float& s)
 	{
 		float x = v.x * s;
@@ -594,6 +595,12 @@ namespace Util
 			newMatrix.c[i].z = m.c[i].z * s;
 		}
 		return newMatrix;
+	}
+
+	float RandomFloat(float min, float max)
+	{
+		int rI = rand() % 100 - 100;
+		return rI/100.0f;
 	}
 
 	template<class T> void SwapValues(T& a, T& b)

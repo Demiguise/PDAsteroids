@@ -1,6 +1,13 @@
 #pragma once
 #include "renderableobject.h"
 
+enum AsteroidSize
+{
+	Large,
+	Medium,
+	Small
+};
+
 class Asteroid :
 	public CRenderableObject
 {
@@ -12,12 +19,16 @@ public:
 
 	void Update();
 	bool OnEvent(Event::IEvent* e);
+	void OnActivated(EnVector3 initPosition, EnVector3 initDirection, AsteroidSize initSize);
+	void SetRigidBody(RigidBody* newRB);
+	void OnDeath();
+	bool active;
+	AsteroidSize size;
 
 private:
 	void Init();
 	void AddListeners();
 	void RemoveListener(std::string eventType);
-	void OnDeath();
-	UINT uID;
+	
 };
 

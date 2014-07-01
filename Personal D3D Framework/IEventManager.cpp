@@ -1,6 +1,6 @@
 #include "IEventManager.h"
 
-typedef std::map<std::string, std::vector<Entity*>>::iterator listenerIT;
+typedef std::map<std::string, std::vector<EventReceiver*>>::iterator listenerIT;
 IEventManager* IEventManager::m_pInstance = 0;
 
 IEventManager* IEventManager::GetInstance()
@@ -23,7 +23,7 @@ IEventManager::~IEventManager()
 	delete m_pInstance;
 }
 
-void IEventManager::AddListener(std::string eventType, Entity* regEntity)
+void IEventManager::AddListener(std::string eventType, EventReceiver* regEntity)
 {
 	listenerIT lisIT;
 	lisIT = listenerMap.find(eventType);
@@ -33,11 +33,11 @@ void IEventManager::AddListener(std::string eventType, Entity* regEntity)
 	}
 	else
 	{
-		listenerMap.insert(std::pair<std::string, std::vector<Entity*>>(eventType, std::vector<Entity*>(1, regEntity)));
+		listenerMap.insert(std::pair<std::string, std::vector<EventReceiver*>>(eventType, std::vector<EventReceiver*>(1, regEntity)));
 	}
 }
 
-void IEventManager::RemoveListener(std::string eventType, Entity* regEntity)
+void IEventManager::RemoveListener(std::string eventType, EventReceiver* regEntity)
 {
 	listenerIT lisIT;
 	lisIT = listenerMap.find(eventType);
@@ -53,7 +53,7 @@ void IEventManager::RemoveListener(std::string eventType, Entity* regEntity)
 	}
 }
 
-void IEventManager::RemoveAllListenersFromEnt(Entity* regEntity)
+void IEventManager::RemoveAllListenersFromEnt(EventReceiver* regEntity)
 {
 	//
 }
@@ -76,7 +76,7 @@ void IEventManager::Update()
 		{
 			for (UINT i = 0 ; i < lisIT->second.size() ; ++i)
 			{
-				if (lisIT->second[i]->OnEvent(mainEventQueue.front()))
+				if (lisIT->second[i]->Receive(mainEventQueue.front()))
 				{
 					break;
 				}

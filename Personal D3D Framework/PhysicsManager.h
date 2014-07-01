@@ -2,10 +2,23 @@
 #include "Colliders.h"
 #include "Entity.h"
 #include "Common.h"
+#include "IEventManager.h"
 
 class Entity;
 struct CollisionData;
 enum ColliderType;
+
+class PhysicsEventReceiver : public EventReceiver
+{
+public:
+	PhysicsEventReceiver(PhysicsManager* parentPhysics);
+	PhysicsEventReceiver();
+	~PhysicsEventReceiver();
+	bool Receive(Event::IEvent* e);
+
+private:
+	PhysicsManager* parent;
+};
 
 struct RayCastHit
 {
@@ -29,23 +42,24 @@ struct CollisionPair
 	CollisionData* data;
 };
 
-
 class PhysicsManager
 {
 public:
-	static PhysicsManager* GetInstance();
+	PhysicsManager();
 	~PhysicsManager();
 	void Update(const float& dt);
+	bool OnEvent(Event::IEvent* e);
 	void CollisionUpdate(const float& dt);
 	bool CastRay(EnVector3 pos, EnVector3 dir, float dist, RayCastHit& raycastOut);
-	void RegisterEntity(Entity* entity, ColliderType rbType, float mass);
+	void RegisterEntity(Entity* entity, ColliderType rbType, float mass, float scale);
 	void RemoveEntity(Entity* entity);
 	float gravAcceleration;
 
+	PhysicsEventReceiver* receiver;
+
 private:
-	PhysicsManager();
+	ModelData ScaleRBModel(ModelData rbModel, const float& scale);
 	void LoadColliders();
-	static PhysicsManager* m_pInstance;
 	void ResolveCollisions(std::vector<CollisionPair>& possibleCollisions,const float& dt);
 	std::vector<CollisionPair> CoarseCollisionDetection(const std::deque<Entity*>& availableCollideables);
 	void GenerateContacts(std::vector<CollisionPair>& coarseCollisions);

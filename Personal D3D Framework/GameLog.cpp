@@ -13,7 +13,7 @@ GameLog* GameLog::GetInstance()
 
 GameLog::GameLog()
 {
-	logVerbosity = 3;
+	logVerbosity = 2;
 	writeToLogVerbosity = 3;
 	activeChannels = DebugChannel::All;
 }
@@ -28,7 +28,7 @@ void GameLog::Log(const DebugChannel logChannel,  const DebugLevel logLevel, con
 {
 	if (logLevel <= logVerbosity)
 	{
-		if (activeChannels&logChannel) //Bitwise AND check for proper channels
+		if (activeChannels&logChannel) //Bitwise 'AND' check for proper channels
 		{
 			char buffer[512];
 			char* newLogLine = AppendNewlineChar(logLine);

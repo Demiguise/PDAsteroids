@@ -4,9 +4,10 @@
 class BufferManager
 {
 public:
-	BufferManager(void);
-	~BufferManager(void);
-	virtual void InitNewBuffer(CRenderableObject* newEntity) = 0;
-	virtual void DestroyBuffer (CRenderableObject* entityToDestroy) = 0;
+	BufferManager();
+	~BufferManager();
+	virtual void InitNewBuffer(ModelData model, std::string name) = 0;
+	virtual bool LinkEntities (CRenderableObject* entity, std::string semanticModelName) = 0;
+	virtual bool RemoveEntity (CRenderableObject* entity) = 0;
 };
 

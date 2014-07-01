@@ -25,4 +25,40 @@ namespace Event
 	{
 
 	}
+
+	//EntityEvent class
+
+	EntityEvent::EntityEvent()
+	{
+
+	}
+
+	EntityEvent::~EntityEvent()
+	{
+
+	}
+
+	//PhysicsCreationEvent class
+
+	PhysicsCreationEvent::PhysicsCreationEvent()
+	{
+
+	}
+
+	PhysicsCreationEvent::~PhysicsCreationEvent()
+	{
+
+	}
+
+	//CollisionEvent class
+
+	CollisionEvent::CollisionEvent()
+	{
+
+	}
+
+	CollisionEvent::~CollisionEvent()
+	{
+
+	}
 }

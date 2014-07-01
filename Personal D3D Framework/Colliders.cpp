@@ -91,6 +91,7 @@ SphereCollider::SphereCollider(const ModelData& model, float initMass, Entity* p
 {
 	typeFlag = ColliderType::Sphere;
 	rbModel = model;
+	radius = (centrePoint - rbModel.vData[0].position).GetMagnitude();
 }
 
 SphereCollider::~SphereCollider()
@@ -100,7 +101,20 @@ SphereCollider::~SphereCollider()
 
 void SphereCollider::ReCalculateAABB(BoundingBox& curAABB)
 {
-	
+	EnVector3 curMin = rbModel.vData[0].position.MatrixMult4x4(parent->localToWorld);
+	EnVector3 curMax = rbModel.vData[0].position.MatrixMult4x4(parent->localToWorld);
+	for (UINT i = 1 ; i < rbModel.vData.size() ; ++i)
+	{
+		EnVector3 curVertex = rbModel.vData[i].position.MatrixMult4x4(parent->localToWorld);
+		if (curVertex.x > curMax.x) { curMax.x = curVertex.x; }
+		if (curVertex.y > curMax.y) { curMax.y = curVertex.y; }
+		if (curVertex.z > curMax.z) { curMax.z = curVertex.z; }
+		if (curVertex.x < curMin.x) { curMin.x = curVertex.x; }
+		if (curVertex.y < curMin.y) { curMin.y = curVertex.y; }
+		if (curVertex.z < curMin.z) { curMin.z = curVertex.z; }
+	}
+	curAABB.minPoint = curMin;
+	curAABB.maxPoint = curMax;
 }
 
 //Contact Generation
@@ -146,7 +160,20 @@ PlanarCollider::~PlanarCollider()
 
 void PlanarCollider::ReCalculateAABB(BoundingBox& curAABB)
 {
-
+	EnVector3 curMin = rbModel.vData[0].position.MatrixMult4x4(parent->localToWorld);
+	EnVector3 curMax = rbModel.vData[0].position.MatrixMult4x4(parent->localToWorld);
+	for (UINT i = 1 ; i < rbModel.vData.size() ; ++i)
+	{
+		EnVector3 curVertex = rbModel.vData[i].position.MatrixMult4x4(parent->localToWorld);
+		if (curVertex.x > curMax.x) { curMax.x = curVertex.x; }
+		if (curVertex.y > curMax.y) { curMax.y = curVertex.y; }
+		if (curVertex.z > curMax.z) { curMax.z = curVertex.z; }
+		if (curVertex.x < curMin.x) { curMin.x = curVertex.x; }
+		if (curVertex.y < curMin.y) { curMin.y = curVertex.y; }
+		if (curVertex.z < curMin.z) { curMin.z = curVertex.z; }
+	}
+	curAABB.minPoint = curMin;
+	curAABB.maxPoint = curMax;
 }
 
 //Contact Generation
@@ -159,6 +186,8 @@ CollisionData* PlanarCollider::GenerateContacts(RigidBody* contactingBody)
 	case ColliderType::Base:
 		break;
 	case ColliderType::Box:
+		break;
+	case ColliderType::Planar:
 		if (CollisionDetectors::PlaneAndPlane(static_cast<PlanarCollider*>(contactingBody), this, contacts))
 		{
 
@@ -176,7 +205,8 @@ namespace CollisionDetectors
 						const PlanarCollider* b,
 						std::vector<Contact*>& data)
 	{
-		return false;
+	
+		return true;
 	}
 
 	bool BoxAndSphere(	const BoxCollider* a,

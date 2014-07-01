@@ -1,6 +1,5 @@
 #include "Input.h"
 
-
 CInput* CInput::m_pInstance = 0;
 
 CInput* CInput::GetInstance()
@@ -23,7 +22,20 @@ CInput::~CInput()
 {
 }
 
-void CInput::Update(UINT msg, WPARAM wParam, LPARAM lParam)
+void CInput::Update()
+{
+	IEventManager* eventManager = IEventManager::GetInstance();
+	Event::InputEvent* inputEvent = new Event::InputEvent();
+	if (activeKeys.size() != 0)
+	{
+		inputEvent->eType = "UserKeysActive";
+		inputEvent->keyEvents = &activeKeys;
+		eventManager->QueueEvent(inputEvent);
+		//GameLog::GetInstance()->Log(DebugChannel::Input, DebugLevel::Normal, "[InputManager] %d currently active keys.", activeKeys.size());
+	}
+}
+
+void CInput::OnEvent(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	IEventManager* eventManager = IEventManager::GetInstance();
 	Event::InputEvent* inputEvent = new Event::InputEvent();
@@ -39,12 +51,6 @@ void CInput::Update(UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYUP:
 		RemoveActiveKey(TranslateKeyPress(wParam));
 		break;
-	}
-	if (activeKeys.size() != 0)
-	{
-		inputEvent->eType = "UserKeysActive";
-		inputEvent->keyEvents = &activeKeys;
-		GameLog::GetInstance()->Log(DebugChannel::Input, DebugLevel::Normal, "[InputManager] %d currently active keys.", activeKeys.size());
 	}
 	eventManager->QueueEvent(inputEvent);
 }

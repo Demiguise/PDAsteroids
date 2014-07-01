@@ -11,10 +11,10 @@ public: //Functions
 	~D3DRenderer();
 	bool Init();
 	void UpdateScene(const EnMatrix4x4 &camPos, const EnVector3& target);
+	bool OnEvent(Event::IEvent* e);
 	void DrawScene();
 	void OnResize(UINT newHeight, UINT newWidth);
-	void CreateBuffer(CRenderableObject* newEnt);
-	void DestroyBuffer(CRenderableObject* entity);
+	void CreateBuffer(ModelData model, std::string name);
 
 private:
 	bool InitDirect3D();

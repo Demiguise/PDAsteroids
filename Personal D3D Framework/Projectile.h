@@ -1,5 +1,7 @@
 #pragma once
 #include "renderableobject.h"
+#include "Timer.h"
+
 class Projectile :
 	public CRenderableObject
 {
@@ -11,11 +13,17 @@ public:
 
 	void Update();
 	bool OnEvent(Event::IEvent* e);
+	void OnDeath();
+	void OnActivated(EnVector3 position, EnVector3 direction);
+	void SetRigidBody(RigidBody* newRB);
+	bool active;
+
 
 private:
 	void Init();
 	void AddListeners();
 	void RemoveListener(std::string eventType);
-	UINT uID;
+	Timer* lifeTimer;
+	float lifeSpan;
 };
 

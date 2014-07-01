@@ -3,6 +3,7 @@
 #define mClientWidth 800
 #define mClientHeight 600
 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					PSTR cmdLine, int showCmd)
 {
@@ -13,21 +14,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 GameApp::GameApp(HINSTANCE hInstance)
 {
 	mFileManager = FileManager::GetInstance();
-	mEventManager = IEventManager::GetInstance();
 	mGameWindow = new GameWindow(this, hInstance, mClientHeight, mClientWidth);
 	mRenderer = new D3DRenderer(hInstance, mGameWindow->GetMainWHandle(),
 											mClientHeight, mClientWidth);
-	mSceneManager = SceneManager::GetInstance();
+	mSceneManager = new SceneManager();
 	//Setup Camera with Position and Rotation
 	mCamera = new Camera(	EnVector3(0.0f, 0.0f, 50.0f),
 							EnVector3(0.0f, 0.0f, 0.0f));
 	mCamera->name = "Camera 1";
 	mSceneManager->SetActiveCamera(mCamera);
+	mPhysicsManager = new PhysicsManager();
 
-	mPhysicsManager = PhysicsManager::GetInstance();
-
+	mEventManager = IEventManager::GetInstance();
 	mTimer = new Timer();
 	physicsTimer = new Timer();
+	LoadAllModels();
+	
+
 	CreateTestObjects();
 }
 
@@ -35,7 +38,30 @@ void GameApp::CreateTestObjects()
 {
 	m_pPlayer = new Player(mFileManager->LoadModelData("Models/Ship.line", FileType::LineFile),
 													EnVector3(0.0f, 0.0f, 0.0f));
-	mRenderer->CreateBuffer(m_pPlayer);
+}
+
+void GameApp::LoadAllModels()
+{
+	//All of them.
+	mRenderer->CreateBuffer(mFileManager->LoadModelData("Models/Ship.line", FileType::LineFile),
+							"Models/Ship.line");
+	mRenderer->CreateBuffer(mFileManager->LoadModelData("Models/Projectile.line", FileType::LineFile),
+							"Models/Projectile.line");
+	mRenderer->CreateBuffer(mFileManager->LoadModelData("Models/Asteroid1L.line", FileType::LineFile),
+							"Models/Asteroid1L.line");
+	mRenderer->CreateBuffer(mFileManager->LoadModelData("Models/Asteroid1M.line", FileType::LineFile),
+							"Models/Asteroid1M.line");
+	mRenderer->CreateBuffer(mFileManager->LoadModelData("Models/Asteroid1S.line", FileType::LineFile),
+							"Models/Asteroid1S.line");
+}
+
+void GameApp::GhettoSpawnAsteroids()
+{
+	for (UINT i = 0 ; i < 10 ; ++i)
+	{
+		EnVector3 startPos = EnVector3(Util::RandomFloat(-10.0f, 10.0f), Util::RandomFloat(-10.0f, 10.0f), 0.0f);
+		mSceneManager->asteroidPool[i]->OnActivated(startPos, startPos, AsteroidSize::Large);
+	}
 }
 
 GameApp::~GameApp()
@@ -49,27 +75,33 @@ int GameApp::Run()
 	MSG msg = {0};
 	mTimer->startTimer();
 	physicsTimer->startTimer();
+
+	//Ghetto game start.
+	mEventManager->Update();
+	mSceneManager->UpdateEntities();
+	GhettoSpawnAsteroids();
+
 	while(msg.message != WM_QUIT)
 	{
-		mTimer->resetTimer();
 		if (PeekMessage(&msg, 0, 0,0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else
+		else if(mTimer->elapsedTime() > 0.016f)
 		{
-			if (physicsTimer->elapsedTime() > 0.005f)
-			{
-				mPhysicsManager->Update(0.005f);
-				physicsTimer->resetTimer();
-			}
-			
+			CInput::GetInstance()->Update();
 			mEventManager->Update();
 			mSceneManager->UpdateEntities();
+			if (physicsTimer->elapsedTime() > PHYSICS_STEP)
+			{
+				mPhysicsManager->Update(PHYSICS_STEP);
+				physicsTimer->resetTimer();
+			}
 			Camera* activeCamera = static_cast<Camera*>(mSceneManager->activeCamera);
 			mRenderer->UpdateScene(activeCamera->localToWorld, activeCamera->lookAtTarget);
 			mRenderer->DrawScene();
+			mTimer->resetTimer();
 		}
 	}
 	return (int)msg.wParam;

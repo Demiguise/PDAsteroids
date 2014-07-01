@@ -1,13 +1,13 @@
 #pragma once
 #include "Common.h"
-#include "GameWindow.h"
+#include "Camera.h"
+#include "Renderer.h"
 #include "D3DRenderer.h"
+#include "GameWindow.h"
 #include "SceneManager.h"
-#include "FileManager.h"
 #include "IEventManager.h"
 #include "PhysicsManager.h"
-#include "Camera.h"
-#include "Player.h" //For test purposes, should probably remove once finished.
+#include "Player.h" 
 #include "GameLog.h"
 #include "Timer.h"
 #include <Awesomium\WebCore.h>
@@ -21,6 +21,8 @@ public:
 	~GameApp();
 	int Run();
 	void CreateTestObjects();
+	void LoadAllModels();
+	void GhettoSpawnAsteroids();
 
 	FileManager* mFileManager;
 	GameWindow* mGameWindow;

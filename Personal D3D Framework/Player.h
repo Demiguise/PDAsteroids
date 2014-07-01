@@ -2,6 +2,8 @@
 #include "renderableobject.h"
 #include "Projectile.h"
 
+#define MAX_PLAYER_PROJECTILES 20
+
 class Player :
 	public CRenderableObject
 {
@@ -19,6 +21,10 @@ private:
 	void AddListeners();
 	void RemoveListener(std::string eventType);
 	void FireShot();
-	UINT uID;
+
+	std::vector<Projectile*> projectilePool;
+	EnVector3 projectileHelper;
+	float maxReloadTime;
+	float curReloadTime;
 };
 

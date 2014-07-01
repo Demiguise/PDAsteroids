@@ -25,18 +25,25 @@ public:
 private:
 	FileManager();
 	static FileManager* m_pInstance;
+	
+	//General Model based things~~
+	bool CheckCacheForDuplicate(std::string fileName, UINT& index);
+	std::vector<ModelData> modelCache;
+
 	std::istringstream CleanFaceData (std::string line);
 	std::vector<std::string> SplitString(std::string line, char delim);
 	ModelData ConstructModelData(	std::vector<EnVector3> verts,
 									std::vector<EnVector3> normals,
 									std::vector<EnVector2> texCoords,
 									std::vector<UINT> faces);
+
 	//Loading Functions for different Models
 	void Load2DLineFile(std::string fileName, ModelData& model);
 	void Load3DObjFile(std::string fileName, ModelData& model);
 
-	std::fstream logStream;
+	//Log functions
 	void GetLocalTime(char* buffer);
 	void MoveAndRenameLog();
+	std::fstream logStream;
 };
 

@@ -16,6 +16,5 @@ public:
 	ModelData mesh;
 
 private:
-	UINT uID;
+	void Init();
 };
-

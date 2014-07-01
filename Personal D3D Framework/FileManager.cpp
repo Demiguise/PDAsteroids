@@ -33,18 +33,41 @@ FileManager::~FileManager()
 ModelData FileManager::LoadModelData(std::string fileName, FileType fileType)
 {
 	ModelData newModel;
+	UINT cacheIndex;
 	switch (fileType)
 	{
 	case FileType::ObjFile:
-		Load3DObjFile(fileName, newModel);
+		if (!CheckCacheForDuplicate(fileName, cacheIndex)) { Load3DObjFile(fileName, newModel); }
+		else 
+		{
+			return modelCache[cacheIndex];
+		}
 		return newModel;
 	case FileType::LineFile:
-		Load2DLineFile(fileName, newModel);
+		if (!CheckCacheForDuplicate(fileName, cacheIndex)) { Load2DLineFile(fileName, newModel); }
+		else
+		{
+			return modelCache[cacheIndex];
+		}
 		return newModel;
 	default:
 		return newModel;
 	}
 }
+
+bool FileManager::CheckCacheForDuplicate(std::string fileName, UINT& index)
+{
+	for (UINT i = 0 ; i < modelCache.size() ; ++i)
+	{
+		if (modelCache[i].semanticName == fileName)
+		{
+			index = i;
+			return true;
+		}
+	}
+	return false;
+}
+
 
 void FileManager::Load2DLineFile(std::string fileName, ModelData& model)
 {
@@ -77,6 +100,7 @@ void FileManager::Load2DLineFile(std::string fileName, ModelData& model)
 	}
 	model = ConstructModelData(lVertices, lNormals, lTexCoords, lLines);
 	model.semanticName = fileName;
+	modelCache.push_back(model);
 }
 
 void FileManager::Load3DObjFile(std::string fileName, ModelData& model)
@@ -130,6 +154,7 @@ void FileManager::Load3DObjFile(std::string fileName, ModelData& model)
 	//OutputDebugString(L"Finished reading data from file.\n");
 	model = ConstructModelData(lVertices, lNormals, lTexCoords, lTris);
 	model.semanticName = fileName;
+	modelCache.push_back(model);
 }
 
 std::istringstream FileManager::CleanFaceData(std::string line)

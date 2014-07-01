@@ -9,7 +9,8 @@ class CInput
 public:
 	static CInput* GetInstance();
 	~CInput();
-	void Update(UINT msg, WPARAM wParam, LPARAM lParam);
+	void Update();
+	void OnEvent(UINT msg, WPARAM wParam, LPARAM lParam);
 private:
 	CInput();
 	static CInput* m_pInstance;

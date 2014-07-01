@@ -8,10 +8,13 @@ class D3DBufferManager :
 public:
 	D3DBufferManager(ID3D11Device* mDevice);
 	~D3DBufferManager();
-	void InitNewBuffer (CRenderableObject* newEntity);
-	void DestroyBuffer (CRenderableObject* entityToDestroy);
+	void InitNewBuffer (ModelData model, std::string name);
+	bool LinkEntities (CRenderableObject* entity, std::string semanticModelName);
+	bool RemoveEntity (CRenderableObject* entity);
+	
+	std::vector<bufferData> bufferCache;
 	std::vector<packedBufferData> GrabSceneBuffers ();
-	std::map<CRenderableObject*, bufferData> bufferMap;
+	std::map<CRenderableObject*, UINT> bufferMap;
 
 private:
 	ID3D11Device* md3dDevice;

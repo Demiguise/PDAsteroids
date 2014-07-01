@@ -8,8 +8,11 @@
 #include <queue>
 #include <cmath>
 #include <assert.h>
+#include "boost\random.hpp"
 
 #define PI 3.14159265f
+#define GAME_STEP 0.016f //Value for locking game to 60 FPS.
+#define PHYSICS_STEP 0.005f //Small but regular physics steps
 
 //Forward Declarations
 class Quaternion;
@@ -212,6 +215,8 @@ namespace Util
 	EnVector3 ScalarProduct3D(const EnVector3& v, const float& s);
 	EnVector3 ScalarDivision3D(const EnVector3& v, const float& s);
 	EnMatrix3x3 ScalarProduct3x3(const EnMatrix3x3&m, const float& s);
+
+	float RandomFloat(float min, float max);
 
 	template<class T> void SwapValues(T& a, T& b);
 	float DegreesToRadians(const float& d);
