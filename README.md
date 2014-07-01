@@ -6,3 +6,5 @@ So this project is essentially the by-product of me realising I need to make a g
 However, this is still a learning exercise and one that I'm quite enjoying. Once this is complete I'll be writing post-mortem based on the notes,commits and illegible drawings I've done during development.
 
 Please take no mind of the sparing use of commits, I sometimes work on things for a good while and like to have things work 'Stably' before syncing to GIT.
+
+My actual unadulturated engine code can be found here: https://github.com/Demiguise/PDEngine
