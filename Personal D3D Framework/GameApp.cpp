@@ -59,7 +59,7 @@ void GameApp::GhettoSpawnAsteroids()
 {
 	for (UINT i = 0 ; i < 10 ; ++i)
 	{
-		EnVector3 startPos = EnVector3(Util::RandomFloat(-10.0f, 10.0f), Util::RandomFloat(-10.0f, 10.0f), 0.0f);
+		EnVector3 startPos = EnVector3(Util::RandomFloat(-5.0f, 5.0f), Util::RandomFloat(-5.0f, 5.0f), 0.0f);
 		mSceneManager->asteroidPool[i]->OnActivated(startPos, startPos, AsteroidSize::Large);
 	}
 }

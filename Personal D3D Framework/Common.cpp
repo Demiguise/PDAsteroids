@@ -599,8 +599,14 @@ namespace Util
 
 	float RandomFloat(float min, float max)
 	{
-		int rI = rand() % 100 - 100;
-		return rI/100.0f;
+		static UINT seed = 124;
+		boost::mt19937* rng = new boost::mt19937();
+		rng->seed((++seed) + time(0));
+		boost::uniform_real<float> distribution(min, max);
+		boost::variate_generator<boost::mt19937, boost::uniform_real<float>> gen(*rng, distribution);
+		float result = gen();
+		delete rng;
+		return result;
 	}
 
 	template<class T> void SwapValues(T& a, T& b)
