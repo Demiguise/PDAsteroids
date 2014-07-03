@@ -92,7 +92,7 @@ void GameWindow::Init()
 
 
 	mHWnd = CreateWindow(	L"BASEGAMEWINDOW",
-							L"DirectX11 Framework",
+							L"PDAsteroids",
 							WS_OVERLAPPEDWINDOW,
 							CW_USEDEFAULT,
 							CW_USEDEFAULT,

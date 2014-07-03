@@ -1,9 +1,5 @@
 #include "GameApp.h"
 
-#define mClientWidth 800
-#define mClientHeight 600
-
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					PSTR cmdLine, int showCmd)
 {
@@ -57,10 +53,17 @@ void GameApp::LoadAllModels()
 
 void GameApp::GhettoSpawnAsteroids()
 {
+	float maxAsteroidPos = 20.0f;
+	float minAsteroidPos = 3.0f;
 	for (UINT i = 0 ; i < 10 ; ++i)
 	{
-		EnVector3 startPos = EnVector3(Util::RandomFloat(-5.0f, 5.0f), Util::RandomFloat(-5.0f, 5.0f), 0.0f);
-		mSceneManager->asteroidPool[i]->OnActivated(startPos, startPos, AsteroidSize::Large);
+		float startingX = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos);
+		while (startingX < minAsteroidPos && startingX > -minAsteroidPos) { startingX = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos); }
+		float startingY = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos);
+		while (startingY < minAsteroidPos && startingY > -minAsteroidPos) { startingY = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos); }
+		EnVector3 startPos = EnVector3(startingX, startingY, 0.0f);
+		EnVector3 startVel = EnVector3(Util::RandomFloat(-5.0f, 5.0f), Util::RandomFloat(-5.0f, 5.0f), 0.0f);
+		mSceneManager->asteroidPool[i]->OnActivated(startPos, startVel, AsteroidSize::Large);
 	}
 }
 

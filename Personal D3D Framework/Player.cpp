@@ -39,7 +39,7 @@ void Player::Init()
 	e->entity = this;
 	e->mass = 1.0f;
 	e->scale = 1.0f;
-	e->rbType = ColliderType::Planar;
+	e->rbType = ColliderType::Sphere;
 	IEventManager::GetInstance()->QueueEvent(e);
 
 	//Init all projectiles in the pool to this one type;

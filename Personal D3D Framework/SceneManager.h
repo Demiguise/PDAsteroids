@@ -6,6 +6,8 @@
 
 
 #define MAX_ASTEROID_COUNT 40
+#define MAX_X_COORD 22
+#define MAX_Y_COORD 22
 
 class Entity;
 
@@ -42,6 +44,7 @@ public:
 
 private:
 	void DealWithAsteroidDeath(Asteroid* deadAsteroid);
+	void CheckObjectOnScreen(Entity* ent);
 
 	std::deque<Entity*> availableEntities;
 	UINT prevSceneEntityCount;

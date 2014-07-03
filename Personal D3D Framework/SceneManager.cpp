@@ -61,8 +61,23 @@ void SceneManager::UpdateEntities()
 {
 	for (UINT i = 0 ; i < availableEntities.size() ; ++i)
 	{
+		CheckObjectOnScreen(availableEntities[i]);
 		availableEntities[i]->Update();
 	}
+}
+
+void SceneManager::CheckObjectOnScreen(Entity* ent)
+{
+	UINT i = 10;
+	if (ent->position.x > MAX_X_COORD || ent->position.x < -MAX_X_COORD)
+	{
+		ent->position.x *= -1;
+	}
+	if (ent->position.y > MAX_Y_COORD || ent->position.y < -MAX_Y_COORD)
+	{
+		ent->position.y *= -1;
+	}
+	return;
 }
 
 bool SceneManager::OnEvent(Event::IEvent* e)

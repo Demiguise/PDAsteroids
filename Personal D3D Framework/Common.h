@@ -13,6 +13,8 @@
 #define PI 3.14159265f
 #define GAME_STEP 0.016f //Value for locking game to 60 FPS.
 #define PHYSICS_STEP 0.005f //Small but regular physics steps
+#define mClientWidth 800
+#define mClientHeight 600
 
 //Forward Declarations
 class Quaternion;
