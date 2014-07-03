@@ -1,5 +1,8 @@
 #include "RenderableObject.h"
-
+#include "Colliders.h"
+#include "Events.h"
+#include "IEventManager.h"
+#include "GameLog.h"
 
 CRenderableObject::CRenderableObject(ModelData newMesh, EnVector3 initPos, EnVector3 initRot) 
 {

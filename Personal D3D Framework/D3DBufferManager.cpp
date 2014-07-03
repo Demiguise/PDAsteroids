@@ -1,5 +1,5 @@
 #include "D3DBufferManager.h"
-
+#include "RenderableObject.h"
 
 D3DBufferManager::D3DBufferManager(ID3D11Device* mDevice)
 {

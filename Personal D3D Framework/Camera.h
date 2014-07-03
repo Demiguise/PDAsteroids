@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
-#include "IEventManager.h"
-#include "GameLog.h"
+
+class IEvent;
 
 class Camera :
 	public Entity

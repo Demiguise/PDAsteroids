@@ -1,4 +1,8 @@
 #include "Camera.h"
+#include "Colliders.h"
+#include "Events.h"
+#include "IEventManager.h"
+#include "GameLog.h"
 
 Camera::Camera(EnVector3 initPos, EnVector3 initRot)
 {

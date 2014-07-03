@@ -1,4 +1,5 @@
 #include "Colliders.h"
+#include "Entity.h"
 
 //Base RigidBody
 RigidBody::RigidBody(float initMass, Entity* parentEnt)

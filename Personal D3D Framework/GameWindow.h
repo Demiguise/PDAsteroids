@@ -1,11 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include <windowsx.h>
-#include "GameApp.h"
-#include "Input.h"
-#include "GameLog.h"
 
 class GameApp;
+class CInput;
 
 class GameWindow
 {

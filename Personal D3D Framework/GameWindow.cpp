@@ -1,4 +1,7 @@
 #include "GameWindow.h"
+#include "GameApp.h"
+#include "Input.h"
+#include "GameLog.h"
 
 GameWindow::GameWindow(GameApp* mGApp, HINSTANCE hInstance, UINT height, UINT width)
 {

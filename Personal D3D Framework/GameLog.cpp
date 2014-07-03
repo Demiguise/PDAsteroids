@@ -1,4 +1,5 @@
 #include "GameLog.h"
+#include "FileManager.h"
 
 GameLog* GameLog::m_pInstance = 0;
 

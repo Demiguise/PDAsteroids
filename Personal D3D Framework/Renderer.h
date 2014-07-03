@@ -1,6 +1,6 @@
 #pragma once
-#include "RenderableObject.h"
 #include "Common.h"
+
 #include "BufferManager.h"
 #include "IEventManager.h"
 
@@ -8,6 +8,7 @@
 //that needs to use a renderer the correct interfaces.
 
 class Renderer;
+class IEvent;
 
 class RendererEventReceiver : public EventReceiver
 {

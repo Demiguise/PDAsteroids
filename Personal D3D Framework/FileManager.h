@@ -1,9 +1,6 @@
 #pragma once
 #include "Common.h"
-#include <fstream>
-#include <sstream>
-#include <ctime>
-#include <direct.h>
+
 
 const char logLocation[] = "Game.log";
 const char backupLocation[] = "./Logs/";
@@ -44,6 +41,5 @@ private:
 	//Log functions
 	void GetLocalTime(char* buffer);
 	void MoveAndRenameLog();
-	std::fstream logStream;
 };
 

@@ -1,9 +1,10 @@
 #pragma once
-#include "Entity.h"
-#include "Asteroid.h"
-#include "GameLog.h"
 #include "IEventManager.h"
 
+class SceneManager;
+class IEvent;
+class Entity;
+class Asteroid;
 
 #define MAX_ASTEROID_COUNT 40
 #define MAX_X_COORD 22

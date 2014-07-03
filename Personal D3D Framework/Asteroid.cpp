@@ -1,4 +1,8 @@
 #include "Asteroid.h"
+#include "Colliders.h"
+#include "Events.h"
+#include "IEventManager.h"
+#include "GameLog.h"
 
 Asteroid::Asteroid( ModelData newMesh, EnVector3 initPos, EnVector3 initRot)
 {

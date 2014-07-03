@@ -1,5 +1,9 @@
 #include "FileManager.h"
 #include <boost/filesystem.hpp>
+#include <fstream>
+#include <sstream>
+#include <ctime>
+#include <direct.h>
 
 FileManager* FileManager::m_pInstance = 0;
 
@@ -218,6 +222,7 @@ ModelData FileManager::ConstructModelData(	std::vector<EnVector3> verts,
 
 void FileManager::WriteToLog(const char* message)
 {
+	std::fstream logStream;
 	logStream.open(logLocation, std::fstream::app | std::fstream::out);
 	if (logStream.fail())
 	{

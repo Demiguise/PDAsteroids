@@ -1,4 +1,17 @@
 #include "GameApp.h"
+#include "FileManager.h"
+#include "GameWindow.h"
+#include "Renderer.h"
+#include "D3DRenderer.h"
+#include "SceneManager.h"
+#include "IEventManager.h"
+#include "PhysicsManager.h"
+#include "Player.h" 
+#include "Asteroid.h"
+#include "Timer.h"
+#include "Camera.h"
+#include "GameLog.h"
+#include "Input.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					PSTR cmdLine, int showCmd)

@@ -1,11 +1,8 @@
 #pragma once
 #include "Common.h"
 #include "Events.h"
-#include "GameLog.h"
 
 //Singleton Design Pattern
-class IEvent;
-
 class EventReceiver
 {
 public:

@@ -1,4 +1,7 @@
 #include "Input.h"
+#include "GameLog.h"
+#include "Events.h"
+#include "IEventManager.h"
 
 CInput* CInput::m_pInstance = 0;
 

@@ -1,13 +1,8 @@
 #pragma once
 #include "Common.h"
-#include "Colliders.h"
 #include "IEventManager.h"
-#include "GameLog.h"
 
-class IEventManager;
 class RigidBody;
-class SceneManager;
-class PhysicsManager;
 class IEvent;
 class Entity;
 
@@ -49,7 +44,6 @@ public:
 	RigidBody* rigidBody;
 	EntityEventReceiver* receiver;
 	BoundingBox AABB;
-
 	UINT uID;
 
 protected:

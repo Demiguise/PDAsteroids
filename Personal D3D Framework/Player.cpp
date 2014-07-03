@@ -1,4 +1,10 @@
 #include "Player.h"
+#include "Colliders.h"
+#include "Events.h"
+#include "IEventManager.h"
+#include "FileManager.h"
+#include "GameLog.h"
+#include "Projectile.h"
 
 Player::Player(ModelData newMesh, EnVector3 initPos, EnVector3 initRot)
 {

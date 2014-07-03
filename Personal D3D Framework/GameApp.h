@@ -1,18 +1,16 @@
 #pragma once
 #include "Common.h"
-#include "Camera.h"
-#include "Renderer.h"
-#include "D3DRenderer.h"
-#include "GameWindow.h"
-#include "SceneManager.h"
-#include "IEventManager.h"
-#include "PhysicsManager.h"
-#include "Player.h" 
-#include "GameLog.h"
-#include "Timer.h"
 #include <Awesomium\WebCore.h>
 
+class FileManager;
 class GameWindow;
+class Renderer;
+class SceneManager;
+class IEventManager;
+class PhysicsManager;
+class Player;
+class Timer;
+class Camera;
 
 class GameApp
 {

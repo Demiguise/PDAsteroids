@@ -1,4 +1,6 @@
 #include "IEventManager.h"
+#include "Events.h"
+#include "GameLog.h"
 
 typedef std::map<std::string, std::vector<EventReceiver*>>::iterator listenerIT;
 IEventManager* IEventManager::m_pInstance = 0;

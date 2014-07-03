@@ -1,6 +1,8 @@
 #pragma once
 #include "renderableobject.h"
 
+class IEvent;
+
 enum AsteroidSize
 {
 	Large,

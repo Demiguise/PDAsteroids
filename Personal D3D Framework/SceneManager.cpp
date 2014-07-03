@@ -1,4 +1,10 @@
 #include "SceneManager.h"
+#include "GameLog.h"
+#include "Entity.h"
+#include "Events.h"
+#include "IEventManager.h"
+#include "Asteroid.h"
+#include "FileManager.h"
 
 //SceneEventReceiver Class
 SceneEventReceiver::SceneEventReceiver(SceneManager* parentScene)

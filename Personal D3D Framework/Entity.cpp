@@ -1,4 +1,8 @@
 #include "Entity.h"
+#include "Colliders.h"
+#include "GameLog.h"
+#include "Events.h"
+#include "IEventManager.h"
 
 //EntityEventReciever Class
 EntityEventReceiver::EntityEventReceiver(Entity* parentEntity)

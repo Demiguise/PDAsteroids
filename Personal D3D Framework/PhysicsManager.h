@@ -1,12 +1,11 @@
 #pragma once
-#include "Colliders.h"
-#include "Entity.h"
 #include "Common.h"
 #include "IEventManager.h"
 
 class Entity;
 struct CollisionData;
 enum ColliderType;
+class PhysicsManager;
 
 class PhysicsEventReceiver : public EventReceiver
 {

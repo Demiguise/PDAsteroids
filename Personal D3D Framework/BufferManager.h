@@ -1,5 +1,6 @@
 #pragma once
-#include "RenderableObject.h"
+#include "Common.h"
+class CRenderableObject;
 
 class BufferManager
 {

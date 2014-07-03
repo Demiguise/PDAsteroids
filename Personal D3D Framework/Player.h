@@ -1,8 +1,9 @@
 #pragma once
 #include "renderableobject.h"
-#include "Projectile.h"
 
 #define MAX_PLAYER_PROJECTILES 20
+
+class Projectile;
 
 class Player :
 	public CRenderableObject

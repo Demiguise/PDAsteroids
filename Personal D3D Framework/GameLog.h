@@ -1,5 +1,5 @@
 #pragma once
-#include "FileManager.h"
+
 
 //0 None (Don't use for logging) | 1 Normal | 2 Errors | 3 Warnings
 enum DebugLevel

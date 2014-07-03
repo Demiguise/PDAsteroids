@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <windowsx.h>
 #include <WinUser.h>
-#include "IEventManager.h"
+#include "Common.h"
 
 class CInput
 {

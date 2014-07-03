@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "RenderableObject.h"
 
 //RendererEventReceiver Class
 RendererEventReceiver::RendererEventReceiver(Renderer* parentRenderer)

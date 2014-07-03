@@ -6,6 +6,8 @@
 #include <d3dx11effect.h>
 #include <DxErr.h>
 
+class Entity;
+
 struct bufferData
 {
 	std::string semanticName;

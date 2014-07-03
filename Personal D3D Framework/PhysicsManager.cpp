@@ -1,4 +1,10 @@
 #include "PhysicsManager.h"
+#include "Entity.h"
+#include "Colliders.h"
+#include "Events.h"
+#include "IEventManager.h"
+#include "GameLog.h"
+#include "FileManager.h"
 
 //PhysicsEventReceiver Class
 PhysicsEventReceiver::PhysicsEventReceiver(PhysicsManager* parentPhysics)

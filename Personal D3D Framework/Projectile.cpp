@@ -1,4 +1,9 @@
 #include "Projectile.h"
+#include "Colliders.h"
+#include "GameLog.h"
+#include "Events.h"
+#include "IEventManager.h"
+
 
 Projectile::Projectile(ModelData newMesh, EnVector3 initPos, EnVector3 initRot)
 {

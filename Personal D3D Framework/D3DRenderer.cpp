@@ -1,4 +1,6 @@
 #include "D3DRenderer.h"
+#include "RenderableObject.h"
+#include "GameLog.h"
 
 //Initialisations
 D3DRenderer::D3DRenderer(HINSTANCE hInstance, HWND hWnd, UINT wHeight, UINT wWidth)

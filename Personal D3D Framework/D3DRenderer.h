@@ -4,6 +4,8 @@
 #include "D3DCommon.h"
 #include <Windows.h>
 
+class IEvent;
+
 class D3DRenderer : public Renderer
 {
 public: //Functions

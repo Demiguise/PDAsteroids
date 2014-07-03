@@ -2,6 +2,8 @@
 #include "renderableobject.h"
 #include "Timer.h"
 
+class IEvent;
+
 class Projectile :
 	public CRenderableObject
 {
