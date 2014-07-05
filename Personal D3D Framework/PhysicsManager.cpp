@@ -28,6 +28,7 @@ PhysicsManager::PhysicsManager()
 	receiver = new PhysicsEventReceiver(this);
 	IEventManager::GetInstance()->AddListener("PhysicsObj Created", receiver);
 	IEventManager::GetInstance()->AddListener("PhysicsObj Destroyed", receiver);
+	IEventManager::GetInstance()->AddListener("Asteroid Activated", receiver);
 	GameLog::GetInstance()->Log(DebugChannel::Physics, DebugLevel::Normal, "[Physics] Initialisation Complete.");
 }
 
@@ -196,7 +197,7 @@ void PhysicsManager::ResolveCollisions(std::vector<CollisionPair>& possibleColli
 		e->entityB = entB;
 		IEventManager::GetInstance()->QueueEvent(e);
 
-		GameLog::GetInstance()->Log(DebugChannel::Physics, DebugLevel::Normal, "[Physics] %s has collided with %s.", entA->name.c_str(), entB->name.c_str());
+		GameLog::GetInstance()->Log(DebugChannel::Physics, DebugLevel::High, "[Physics] %s has collided with %s.", entA->name.c_str(), entB->name.c_str());
 	}
 }
 

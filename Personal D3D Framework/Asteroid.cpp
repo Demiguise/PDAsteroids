@@ -43,12 +43,25 @@ void Asteroid::Update()
 
 void Asteroid::OnActivated(EnVector3 initPosition, EnVector3 initDirection, AsteroidSize initSize)
 {
+	//One event for general
 	Event::EntityEvent* e = new Event::EntityEvent();
 	e->eType = "Asteroid Activated";
 	e->entity = this;
 	IEventManager::GetInstance()->QueueEvent(e);
 
-	
+	switch(initSize)
+	{
+	case AsteroidSize::Large:
+		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 1.0f);
+		break;
+	case AsteroidSize::Medium:
+		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 0.5f);
+		break;
+	case AsteroidSize::Small:
+		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 0.25f);
+		break;
+	}
+
 	active = true;
 	renderable = true;
 	rigidBody->isAwake = true;
@@ -59,6 +72,7 @@ void Asteroid::OnActivated(EnVector3 initPosition, EnVector3 initDirection, Aste
 
 void Asteroid::OnDeath()
 {
+	//One event for general
 	Event::EntityEvent* e = new Event::EntityEvent();
 	e->eType = "Asteroid Deactivated";
 	e->entity = this;
@@ -67,6 +81,16 @@ void Asteroid::OnDeath()
 	renderable = false;
 	rigidBody->isAwake = false;
 	velocity = EnVector3::Zero();
+}
+
+ModelData Asteroid::ScaleRBModel(ModelData rbModel, const float& scale)
+{
+	ModelData scaledModel = rbModel;
+	for (UINT i = 0 ; i < rbModel.vData.size() ; ++i)
+	{
+		scaledModel.vData[i].position = Util::ScalarProduct3D(rbModel.vData[i].position, scale);
+	}
+	return scaledModel;
 }
 
 bool Asteroid::OnEvent(Event::IEvent* e)

@@ -14,8 +14,8 @@ GameLog* GameLog::GetInstance()
 
 GameLog::GameLog()
 {
-	logVerbosity = 2;
-	writeToLogVerbosity = 3;
+	logVerbosity = DebugLevel::Normal;
+	writeToLogVerbosity = DebugLevel::High;
 	activeChannels = DebugChannel::All;
 }
 

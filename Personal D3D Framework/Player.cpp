@@ -55,8 +55,9 @@ void Player::Init()
 		projectilePool.push_back(new Projectile(FileManager::GetInstance()->LoadModelData("Models/Projectile.line", FileType::LineFile)));
 		projectilePool[i]->name = "Projectile";
 	}
-	
-	maxReloadTime = 0.3f;
+	maxInvulTime = 3.0f;
+	lives = 3;
+	maxReloadTime = 0.1f;
 	AddListeners();
 }
 
@@ -64,7 +65,7 @@ void Player::AddListeners()
 {
 	IEventManager* eventMan = IEventManager::GetInstance();
 	eventMan->AddListener("UserKeysActive", receiver);
-	eventMan->AddListener("Collision", receiver);
+	eventMan->AddListener("Collision Event", receiver);
 }
 
 void Player::RemoveListener(std::string eventType)
@@ -78,6 +79,7 @@ void Player::Update()
 	Entity::Update();
 	projectileHelper = EnVector3(0.0f, 1.8f, 0.0f).MatrixMult4x4(localToWorld);
 	if (curReloadTime > 0.0f) { curReloadTime -= GAME_STEP; }
+	if (curInvulTime > 0.0f) { curInvulTime -= GAME_STEP; }
 }
 
 void Player::FireShot()
@@ -102,16 +104,16 @@ bool Player::OnEvent(Event::IEvent* e)
 			switch (keyPresses[i])
 			{
 			case GameKey::A:
-				rotation += EnVector3(0.0f, 0.0f, -3.0f);
+				rotation += EnVector3(0.0f, 0.0f, -5.0f);
 				break;
 			case GameKey::D:
-				rotation += EnVector3(0.0f, 0.0f, 3.0f);
+				rotation += EnVector3(0.0f, 0.0f, 5.0f);
 				break;
 			case GameKey::S:
-				AddForce(GetLocalAxis(1) , -15);
+				AddForce(GetLocalAxis(1) , -40);
 				break;
 			case GameKey::W:
-				AddForce(GetLocalAxis(1), 15);
+				AddForce(GetLocalAxis(1), 40);
 				break;
 			case GameKey::SPACE:
 				if (curReloadTime <= 0.0f)
@@ -124,9 +126,31 @@ bool Player::OnEvent(Event::IEvent* e)
 		} 
 		return false;
 	}
-	else if(e->eType == "Collision")
+	else if(e->eType == "Collision Event")
 	{
-		GameLog::GetInstance()->Log(DebugChannel::All, DebugLevel::Normal, "Player has recieved event regarding a collision");
+		Event::CollisionEvent* eCol = static_cast<Event::CollisionEvent*>(e);
+		if ((	eCol->entityA->uID == this->uID &&
+				eCol->entityB->name == "Asteroid") || (
+				eCol->entityA->name == "Asteroid" &&
+				eCol->entityB->uID == this->uID))
+		{
+			if (curInvulTime <= 0.0f) //If the invulnerability timer has run out.
+			{
+				--lives;
+				if (lives == 0) 
+				{
+					GameLog::GetInstance()->Log(DebugChannel::Main, DebugLevel::Low, "[Player] Player has lost all lives.");
+					return false;
+					//Game needs to end/restart
+				}
+				GameLog::GetInstance()->Log(DebugChannel::Main, DebugLevel::Low, "[Player] Player has lost a life. (%i) remaining.", lives);
+				curInvulTime = maxInvulTime; 
+			}
+			else
+			{
+				//Ignore collision due to invulnerability;
+			}
+		}
 	}
 	return false;
 }

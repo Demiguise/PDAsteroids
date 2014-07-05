@@ -5,7 +5,9 @@
 enum DebugLevel
 {
 	None = 0, 
+	Low,
 	Normal,
+	High,
 	Error,
 	Warning
 };

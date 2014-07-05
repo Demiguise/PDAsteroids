@@ -1,5 +1,4 @@
 #include "FileManager.h"
-#include <boost/filesystem.hpp>
 #include <fstream>
 #include <sstream>
 #include <ctime>

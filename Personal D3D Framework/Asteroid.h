@@ -31,6 +31,6 @@ private:
 	void Init();
 	void AddListeners();
 	void RemoveListener(std::string eventType);
-	
+	ModelData ScaleRBModel(ModelData rbModel, const float& scale);
 };
 

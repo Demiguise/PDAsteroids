@@ -239,7 +239,8 @@ void D3DRenderer::DrawScene()
 {
 	std::vector<packedBufferData> sceneData = mBufferManager->GrabSceneBuffers();
 
-	float bgColor[4] = {0.69f, 0.77f, 0.87f, 1.0f};
+	//float bgColor[4] = {0.69f, 0.77f, 0.87f, 1.0f};
+	float bgColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	mDeviceContext->ClearRenderTargetView(mRenderTargetView, bgColor);
 	mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 

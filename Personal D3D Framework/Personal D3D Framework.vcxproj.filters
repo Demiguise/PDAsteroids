@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Models">
-      <UniqueIdentifier>{39e49006-bdce-4557-b00d-bb993d2c875e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Effects">
       <UniqueIdentifier>{63f701c0-2b22-45d8-a18d-df790c703106}</UniqueIdentifier>
     </Filter>
@@ -48,9 +45,6 @@
     </Filter>
     <Filter Include="Header Files\Physics">
       <UniqueIdentifier>{7b343eb0-e520-44a1-bde6-a8bebeeb8e59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Models\Colliders">
-      <UniqueIdentifier>{0f9571e4-24bc-4ef5-a2b9-e37930201e1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{e339f8df-a7c5-4f95-a770-442e53550bf1}</UniqueIdentifier>
@@ -212,23 +206,6 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files\Entities\Game</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Models\Nyx.obj">
-      <Filter>Models</Filter>
-    </Object>
-    <Object Include="Models\Box.obj">
-      <Filter>Models</Filter>
-    </Object>
-    <Object Include="Models\Colliders\RBCube.obj">
-      <Filter>Models\Colliders</Filter>
-    </Object>
-    <Object Include="Models\Colliders\RBCylinder.obj">
-      <Filter>Models\Colliders</Filter>
-    </Object>
-    <Object Include="Models\Colliders\RBSphere.obj">
-      <Filter>Models\Colliders</Filter>
-    </Object>
   </ItemGroup>
   <ItemGroup>
     <None Include="Effects\color.fx">

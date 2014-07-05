@@ -16,7 +16,8 @@ public:
 	
 	void Update();
 	bool OnEvent(Event::IEvent* e);
-	
+	UINT lives;
+
 private:
 	void Init();
 	void AddListeners();
@@ -25,6 +26,8 @@ private:
 
 	std::vector<Projectile*> projectilePool;
 	EnVector3 projectileHelper;
+	float maxInvulTime;
+	float curInvulTime;
 	float maxReloadTime;
 	float curReloadTime;
 };
