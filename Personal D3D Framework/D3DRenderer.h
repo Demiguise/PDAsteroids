@@ -4,7 +4,7 @@
 #include "D3DCommon.h"
 #include <Windows.h>
 
-class IEvent;
+class UI;
 
 class D3DRenderer : public Renderer
 {
@@ -17,6 +17,7 @@ public: //Functions
 	void DrawScene();
 	void OnResize(UINT newHeight, UINT newWidth);
 	void CreateBuffer(ModelData model, std::string name);
+	UI* GetUI();
 
 private:
 	bool InitDirect3D();

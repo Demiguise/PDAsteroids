@@ -5,9 +5,9 @@ class IEvent;
 
 enum AsteroidSize
 {
-	Large,
-	Medium,
-	Small
+	Large = 2,
+	Medium = 1,
+	Small = 0
 };
 
 class Asteroid :

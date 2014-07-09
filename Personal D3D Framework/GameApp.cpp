@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "GameLog.h"
 #include "Input.h"
+#include "UI.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					PSTR cmdLine, int showCmd)
@@ -38,7 +39,6 @@ GameApp::GameApp(HINSTANCE hInstance)
 	mTimer = new Timer();
 	physicsTimer = new Timer();
 	LoadAllModels();
-	
 
 	CreateTestObjects();
 }
@@ -64,22 +64,6 @@ void GameApp::LoadAllModels()
 							"Models/Asteroid1S.line");
 }
 
-void GameApp::GhettoSpawnAsteroids()
-{
-	float maxAsteroidPos = 20.0f;
-	float minAsteroidPos = 3.0f;
-	for (UINT i = 0 ; i < 10 ; ++i)
-	{
-		float startingX = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos);
-		while (startingX < minAsteroidPos && startingX > -minAsteroidPos) { startingX = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos); }
-		float startingY = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos);
-		while (startingY < minAsteroidPos && startingY > -minAsteroidPos) { startingY = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos); }
-		EnVector3 startPos = EnVector3(startingX, startingY, 0.0f);
-		EnVector3 startVel = EnVector3(Util::RandomFloat(-5.0f, 5.0f), Util::RandomFloat(-5.0f, 5.0f), 0.0f);
-		mSceneManager->asteroidPool[i]->OnActivated(startPos, startVel, AsteroidSize::Large);
-	}
-}
-
 GameApp::~GameApp()
 {
 	delete mCamera;
@@ -95,7 +79,7 @@ int GameApp::Run()
 	//Ghetto game start.
 	mEventManager->Update();
 	mSceneManager->UpdateEntities();
-	GhettoSpawnAsteroids();
+	mSceneManager->InitLevel();
 
 	while(msg.message != WM_QUIT)
 	{
@@ -104,7 +88,7 @@ int GameApp::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else if(mTimer->elapsedTime() > 0.016f)
+		else if(mTimer->elapsedTime() > GAME_STEP)
 		{
 			CInput::GetInstance()->Update();
 			mEventManager->Update();
@@ -116,6 +100,7 @@ int GameApp::Run()
 			}
 			Camera* activeCamera = static_cast<Camera*>(mSceneManager->activeCamera);
 			mRenderer->UpdateScene(activeCamera->localToWorld, activeCamera->lookAtTarget);
+			mRenderer->GetUI()->Update(m_pPlayer);
 			mRenderer->DrawScene();
 			mTimer->resetTimer();
 		}

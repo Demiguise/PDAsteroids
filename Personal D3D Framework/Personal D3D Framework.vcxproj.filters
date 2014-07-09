@@ -58,6 +58,12 @@
     <Filter Include="Header Files\Entities\Game">
       <UniqueIdentifier>{21683a26-c07b-4dc1-b12f-ec9cee931a9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Rendering\DX11\UI">
+      <UniqueIdentifier>{da9503c3-e409-4a09-aef0-6dcf054cc354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering\DX11\UI">
+      <UniqueIdentifier>{8176cc99-c1dc-4b18-b9f9-478a5253225b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">
@@ -132,6 +138,15 @@
     <ClInclude Include="Projectile.h">
       <Filter>Header Files\Entities\Game</Filter>
     </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files\Rendering\DX11\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FW1FontWrapper.h">
+      <Filter>Header Files\Rendering\DX11\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElements.h">
+      <Filter>Header Files\Rendering\DX11\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -205,6 +220,12 @@
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files\Entities\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files\Rendering\DX11\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElements.cpp">
+      <Filter>Source Files\Rendering\DX11\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

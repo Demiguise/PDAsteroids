@@ -1,6 +1,5 @@
 #pragma once
 #include "Common.h"
-#include <Awesomium\WebCore.h>
 
 class FileManager;
 class GameWindow;
@@ -11,6 +10,7 @@ class PhysicsManager;
 class Player;
 class Timer;
 class Camera;
+class UI;
 
 class GameApp
 {
@@ -20,7 +20,6 @@ public:
 	int Run();
 	void CreateTestObjects();
 	void LoadAllModels();
-	void GhettoSpawnAsteroids();
 
 	FileManager* mFileManager;
 	GameWindow* mGameWindow;

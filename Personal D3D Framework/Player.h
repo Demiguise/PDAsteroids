@@ -17,7 +17,8 @@ public:
 	void Update();
 	bool OnEvent(Event::IEvent* e);
 	UINT lives;
-
+	UINT score;
+	UINT curLevel;
 private:
 	void Init();
 	void AddListeners();

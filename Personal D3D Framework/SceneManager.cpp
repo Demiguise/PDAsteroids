@@ -72,6 +72,22 @@ void SceneManager::UpdateEntities()
 	}
 }
 
+void SceneManager::InitLevel()
+{
+	float maxAsteroidPos = 20.0f;
+	float minAsteroidPos = 3.0f;
+	for (UINT i = 0 ; i < 10 ; ++i)
+	{
+		float startingX = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos);
+		while (startingX < minAsteroidPos && startingX > -minAsteroidPos) { startingX = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos); }
+		float startingY = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos);
+		while (startingY < minAsteroidPos && startingY > -minAsteroidPos) { startingY = Util::RandomFloat(-maxAsteroidPos, maxAsteroidPos); }
+		EnVector3 startPos = EnVector3(startingX, startingY, 0.0f);
+		EnVector3 startVel = EnVector3(Util::RandomFloat(-5.0f, 5.0f), Util::RandomFloat(-5.0f, 5.0f), 0.0f);
+		asteroidPool[i]->OnActivated(startPos, startVel, AsteroidSize::Large);
+	}
+}
+
 void SceneManager::CheckObjectOnScreen(Entity* ent)
 {
 	UINT i = 10;
@@ -130,13 +146,29 @@ void SceneManager::DealWithAsteroidDeath(Asteroid* deadAsteroid)
 				break;
 			case AsteroidSize::Small:
 				deadAsteroid->active = false;
-				return;
+				break;
 			}
 			--asteroidCount;
 		}
 		if (asteroidCount == 0) { break; }
 	}
 	deadAsteroid->active = false;
+	if (!CheckForAsteroids())
+	{
+		Event::IEvent* e = new Event::IEvent;
+		e->eType = "Level Complete";
+		IEventManager::GetInstance()->QueueEvent(e);
+		InitLevel();
+	}
+}
+
+bool SceneManager::CheckForAsteroids()
+{
+	for (Asteroid* asteroid : asteroidPool)
+	{
+		if(asteroid->active) { return true; }
+	}
+	return false;
 }
 
 UINT SceneManager::GenerateUID()

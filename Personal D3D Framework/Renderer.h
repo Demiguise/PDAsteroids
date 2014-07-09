@@ -9,6 +9,7 @@
 
 class Renderer;
 class IEvent;
+class UI;
 
 class RendererEventReceiver : public EventReceiver
 {
@@ -28,7 +29,7 @@ public:
 	Renderer();
 	~Renderer();
 	virtual bool Init() = 0;
-
+	virtual UI* GetUI() = 0;
 	virtual void UpdateScene(const EnMatrix4x4 &camPos, const EnVector3& target) = 0;
 	virtual void DrawScene() = 0;
 	virtual void OnResize(UINT newHeight, UINT newWidth) = 0;
@@ -36,5 +37,7 @@ public:
 	virtual bool OnEvent(Event::IEvent* e) = 0;
 
 	std::string rendererName;
+
 	RendererEventReceiver* receiver;
+	UI* UserInterface;
 };

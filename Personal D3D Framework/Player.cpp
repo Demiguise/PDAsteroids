@@ -5,6 +5,7 @@
 #include "FileManager.h"
 #include "GameLog.h"
 #include "Projectile.h"
+#include "Asteroid.h"
 
 Player::Player(ModelData newMesh, EnVector3 initPos, EnVector3 initRot)
 {
@@ -57,6 +58,8 @@ void Player::Init()
 	}
 	maxInvulTime = 3.0f;
 	lives = 3;
+	score = 0;
+	curLevel = 0;
 	maxReloadTime = 0.1f;
 	AddListeners();
 }
@@ -66,6 +69,8 @@ void Player::AddListeners()
 	IEventManager* eventMan = IEventManager::GetInstance();
 	eventMan->AddListener("UserKeysActive", receiver);
 	eventMan->AddListener("Collision Event", receiver);
+	eventMan->AddListener("Asteroid Deactivated", receiver);
+	eventMan->AddListener("Level Complete", receiver);
 }
 
 void Player::RemoveListener(std::string eventType)
@@ -140,6 +145,8 @@ bool Player::OnEvent(Event::IEvent* e)
 				if (lives == 0) 
 				{
 					GameLog::GetInstance()->Log(DebugChannel::Main, DebugLevel::Low, "[Player] Player has lost all lives.");
+					curLevel = 0;
+					lives = 3;
 					return false;
 					//Game needs to end/restart
 				}
@@ -151,6 +158,16 @@ bool Player::OnEvent(Event::IEvent* e)
 				//Ignore collision due to invulnerability;
 			}
 		}
+	}
+	else if (e->eType == "Asteroid Deactivated")
+	{
+		Asteroid* deadAsteroid = static_cast<Asteroid*>(static_cast<Event::EntityEvent*>(e)->entity);
+		score += 300 + (-100 * deadAsteroid->size);
+	}
+	else if(e->eType == "Level Complete")
+	{
+		curLevel += 1;
+		score += 1000;
 	}
 	return false;
 }

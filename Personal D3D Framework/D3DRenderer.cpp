@@ -1,6 +1,7 @@
 #include "D3DRenderer.h"
 #include "RenderableObject.h"
 #include "GameLog.h"
+#include "UI.h"
 
 //Initialisations
 D3DRenderer::D3DRenderer(HINSTANCE hInstance, HWND hWnd, UINT wHeight, UINT wWidth)
@@ -11,6 +12,7 @@ D3DRenderer::D3DRenderer(HINSTANCE hInstance, HWND hWnd, UINT wHeight, UINT wWid
 		mRenderTargetView(0),
 		mSwapChain(0)
 {
+	
 	rendererName = "DirectX11";
 	mHInst = hInstance;
 	mHWnd = hWnd;	
@@ -37,6 +39,7 @@ bool D3DRenderer::Init()
 	InitEffects();
 	CreateInputLayer();
 	mBufferManager = new D3DBufferManager(md3dDevice);
+	UserInterface = new UI(md3dDevice);
 	GameLog::GetInstance()->Log(DebugChannel::Main, DebugLevel::Normal, "[D3DRenderer] Initialisation Complete.");
 	return true;
 }
@@ -46,6 +49,7 @@ bool D3DRenderer::InitDirect3D()
 	//Description for the swap chain we're using
 	DXGI_SWAP_CHAIN_DESC sd;
 
+	
 	//Defining the swap chain buffer
 	sd.BufferDesc.Width = mWindowWidth;
 	sd.BufferDesc.Height = mWindowHeight;
@@ -269,8 +273,14 @@ void D3DRenderer::DrawScene()
 		}
 	}
 
-	
+	UserInterface->Render(mDeviceContext);
+
 	mSwapChain->Present(0,0);
+}
+
+UI* D3DRenderer::GetUI()
+{
+	return UserInterface;
 }
 
 void D3DRenderer::CreateBuffer(ModelData model, std::string name)

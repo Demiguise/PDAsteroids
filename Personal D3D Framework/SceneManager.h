@@ -37,6 +37,7 @@ public:
 	void UpdateEntities();
 	bool OnEvent(Event::IEvent* e);
 	void InitAsteroids();
+	void InitLevel();
 
 	Entity* activeCamera;
 	SceneEventReceiver* receiver;
@@ -45,6 +46,7 @@ public:
 
 private:
 	void DealWithAsteroidDeath(Asteroid* deadAsteroid);
+	bool CheckForAsteroids();
 	void CheckObjectOnScreen(Entity* ent);
 
 	std::deque<Entity*> availableEntities;
