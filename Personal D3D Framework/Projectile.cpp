@@ -35,9 +35,9 @@ Projectile::~Projectile()
 	delete lifeTimer;
 }
 
-void Projectile::Update()
+void Projectile::Update(float dt)
 {
-	Entity::Update();
+	Entity::Update(dt);
 	if(active)
 	{
 		if (lifeTimer->elapsedTime() >= lifeSpan)

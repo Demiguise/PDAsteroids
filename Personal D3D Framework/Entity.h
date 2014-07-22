@@ -35,7 +35,7 @@ public:
 	Entity(EnVector3 initPos);
 	Entity();
 	~Entity();
-	virtual void Update();
+	virtual void Update(float dt);
 	virtual bool OnEvent(Event::IEvent* e);
 	virtual void OnDeath();
 	virtual void SetActiveStatus(bool status);

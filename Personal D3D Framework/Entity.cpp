@@ -73,7 +73,7 @@ void Entity::Init()
 //Runtime
 
 //Performs basic update operations all Entities will require
-void Entity::Update()
+void Entity::Update(float dt)
 {
 	UpdateQuaternion();
 	UpdateLocalToWorldMatrix();

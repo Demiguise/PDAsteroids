@@ -36,9 +36,9 @@ Asteroid::~Asteroid()
 	eventMan->RemoveAllListenersFromEnt(receiver);
 }
 
-void Asteroid::Update()
+void Asteroid::Update(float dt)
 {
-	Entity::Update();
+	Entity::Update(dt);
 }
 
 void Asteroid::OnActivated(EnVector3 initPosition, EnVector3 initDirection, AsteroidSize initSize)

@@ -16,7 +16,7 @@ public:
 	Player(ModelData newMesh);
 	~Player();
 	
-	void Update();
+	void Update(float dt);
 	bool OnEvent(Event::IEvent* e);
 	UINT lives;
 	UINT score;

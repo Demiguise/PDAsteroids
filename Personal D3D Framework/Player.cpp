@@ -82,12 +82,12 @@ void Player::RemoveListener(std::string eventType)
 	eventMan->RemoveListener(eventType, receiver);
 }
 
-void Player::Update()
+void Player::Update(float dt)
 {
-	Entity::Update();
+	Entity::Update(dt);
 	projectileHelper = EnVector3(0.0f, 1.8f, 0.0f).MatrixMult4x4(localToWorld);
-	if (curReloadTime > 0.0f) { curReloadTime -= GAME_STEP; }
-	if (curInvulTime > 0.0f) { curInvulTime -= GAME_STEP; }
+	if (curReloadTime > 0.0f) { curReloadTime -= dt; }
+	if (curInvulTime > 0.0f) { curInvulTime -= dt; }
 }
 
 void Player::FireShot()

@@ -47,9 +47,9 @@ void CRenderableObject::Init()
 	type = EntityType::RObjType;
 }
 
-void CRenderableObject::Update()
+void CRenderableObject::Update(float dt)
 {
-	Entity::Update();
+	Entity::Update(dt);
 }
 
 void CRenderableObject::SetActiveStatus(bool status)

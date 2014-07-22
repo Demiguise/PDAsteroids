@@ -11,7 +11,7 @@
 #include "boost\random.hpp"
 
 #define PI 3.14159265f
-#define GAME_STEP 0.016f //Value for locking game to 60 FPS.
+#define RENDER_STEP (1.0f/60.0f) //Locked to 60FPS, I hope. 
 #define PHYSICS_STEP 0.005f //Small but regular physics steps
 #define mClientWidth 800
 #define mClientHeight 600

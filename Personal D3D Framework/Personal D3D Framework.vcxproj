@@ -147,7 +147,9 @@
     <ClCompile Include="UIElements.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bass.dll" />
     <None Include="Effects\color.fx" />
+    <None Include="FW1FontWrapper.dll" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\bikehorn.wav" />

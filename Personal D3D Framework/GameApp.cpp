@@ -68,14 +68,15 @@ GameApp::~GameApp()
 int GameApp::Run()
 {
 	MSG msg = {0};
-	Timer fpsTimer, frameTimer, physicsTimer, renderTimer;
+	Timer fpsTimer, frameTimer, physicsTimer, renderTimer, dtTimer;
 	renderTimer.startTimer();
 	physicsTimer.startTimer();
 	fpsTimer.startTimer();
+	dtTimer.startTimer();
 	UINT fpsCounter = 0;
 	//Ghetto game start.
 	mEventManager->Update();
-	mSceneManager->UpdateEntities();
+	mSceneManager->UpdateEntities(1.0f);
 	mSceneManager->InitLevel();
 	mRenderer->GetUI()->ActivateMainMenu();
 	m_pPlayer->SetActiveStatus(false);
@@ -110,8 +111,8 @@ int GameApp::Run()
 			}
 
 			mEventManager->Update();
-			mSceneManager->UpdateEntities();
-
+			mSceneManager->UpdateEntities(dtTimer.elapsedTime());
+			dtTimer.resetTimer();
 			//Physics Update
 			if (physicsTimer.elapsedTime() > PHYSICS_STEP)
 			{
@@ -120,7 +121,7 @@ int GameApp::Run()
 			}
 
 			//Render scene
-			if (renderTimer.elapsedTime() > 0.0016f)
+			if (renderTimer.elapsedTime() > RENDER_STEP)
 			{
 				frameTimer.resetTimer();
 				Camera* activeCamera = static_cast<Camera*>(mSceneManager->activeCamera);
@@ -134,6 +135,7 @@ int GameApp::Run()
 					fpsTimer.resetTimer();
 					fpsCounter = 0;
 				}
+				renderTimer.resetTimer();
 			}
 		}
 	}

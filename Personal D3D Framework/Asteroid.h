@@ -19,7 +19,7 @@ public:
 	Asteroid(ModelData newMesh);
 	~Asteroid();
 
-	void Update();
+	void Update(float dt);
 	bool OnEvent(Event::IEvent* e);
 	void OnActivated(EnVector3 initPosition, EnVector3 initDirection, AsteroidSize initSize);
 	void SetRigidBody(RigidBody* newRB);

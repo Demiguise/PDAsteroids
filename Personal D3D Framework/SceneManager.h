@@ -34,7 +34,7 @@ public:
 	void RemoveEntity(Entity* entity);
 	UINT GenerateUID();
 	void SetActiveCamera(Entity* newCam);
-	void UpdateEntities();
+	void UpdateEntities(float dt);
 	bool OnEvent(Event::IEvent* e);
 	void InitAsteroids();
 	void InitLevel();

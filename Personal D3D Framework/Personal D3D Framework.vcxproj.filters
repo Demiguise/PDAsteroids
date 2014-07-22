@@ -256,6 +256,12 @@
     <None Include="Effects\color.fx">
       <Filter>Effects</Filter>
     </None>
+    <None Include="bass.dll">
+      <Filter>Source Files\Audio</Filter>
+    </None>
+    <None Include="FW1FontWrapper.dll">
+      <Filter>Source Files\Rendering\DX11\UI</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\bikehorn.wav">

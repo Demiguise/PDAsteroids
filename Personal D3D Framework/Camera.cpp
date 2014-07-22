@@ -58,7 +58,7 @@ void Camera::RemoveListener(std::string eventType)
 	eventMan->RemoveListener(eventType, receiver);
 }
 
-void Camera::Update()
+void Camera::Update(float dt)
 {
 	lookAtTarget = Util::ScalarProduct3D(GetLocalAxis(2), -2.0f) + position;
 	UpdateQuaternion();

@@ -11,7 +11,7 @@ public:
 	CRenderableObject();
 	~CRenderableObject();
 	
-	void Update();
+	void Update(float dt);
 	void SetActiveStatus(bool status);
 	bool renderable;
 	ModelData mesh;

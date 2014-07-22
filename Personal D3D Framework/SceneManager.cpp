@@ -64,12 +64,12 @@ void SceneManager::RemoveEntity(Entity* entity)
 	}
 }
 
-void SceneManager::UpdateEntities()
+void SceneManager::UpdateEntities(float dt)
 {
 	for (UINT i = 0 ; i < availableEntities.size() ; ++i)
 	{
 		CheckObjectOnScreen(availableEntities[i]);
-		availableEntities[i]->Update();
+		availableEntities[i]->Update(dt);
 	}
 }
 

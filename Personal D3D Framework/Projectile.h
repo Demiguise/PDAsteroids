@@ -13,7 +13,7 @@ public:
 	Projectile(ModelData newMesh);
 	~Projectile();
 
-	void Update();
+	void Update(float dt);
 	bool OnEvent(Event::IEvent* e);
 	void OnDeath();
 	void OnActivated(EnVector3 position, EnVector3 direction);

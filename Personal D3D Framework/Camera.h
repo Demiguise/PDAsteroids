@@ -11,7 +11,7 @@ public:
 	Camera(EnVector3 initPos);
 	Camera();
 	~Camera();
-	void Update();
+	void Update(float dt);
 	void SetPosition(EnVector3 newPos);
 	void SetRotation(EnVector3 newRot);
 	bool OnEvent(Event::IEvent* e);
