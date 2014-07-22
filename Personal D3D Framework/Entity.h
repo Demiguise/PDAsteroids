@@ -6,6 +6,16 @@ class RigidBody;
 class IEvent;
 class Entity;
 
+enum EntityType
+{
+	BasicType,
+	RObjType,
+	AsteroidType,
+	PlayerType,
+	ProjectleType,
+	CameraType
+};
+
 class EntityEventReceiver : public EventReceiver
 {
 public:
@@ -28,12 +38,14 @@ public:
 	virtual void Update();
 	virtual bool OnEvent(Event::IEvent* e);
 	virtual void OnDeath();
+	virtual void SetActiveStatus(bool status);
 	void AddForce(EnVector3 direction, float power);
 	bool TestAABBIntersection(BoundingBox& incomingAABB);
 	EnVector3 GetLocalAxis(const int& index);
 	UINT GetUID();
 	virtual void SetRigidBody(RigidBody* newRB);
 
+	EntityType type;
 	std::string name;
 	EnVector3 position;
 	EnVector3 rotation;

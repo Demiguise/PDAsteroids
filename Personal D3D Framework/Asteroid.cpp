@@ -52,13 +52,13 @@ void Asteroid::OnActivated(EnVector3 initPosition, EnVector3 initDirection, Aste
 	switch(initSize)
 	{
 	case AsteroidSize::Large:
-		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 1.0f);
+		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 1.7f);
 		break;
 	case AsteroidSize::Medium:
-		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 0.5f);
+		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 1.0f);
 		break;
 	case AsteroidSize::Small:
-		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 0.25f);
+		rigidBody->rbModel = ScaleRBModel(rigidBody->rbModel, 0.5f);
 		break;
 	}
 
@@ -78,8 +78,7 @@ void Asteroid::OnDeath()
 	e->entity = this;
 	IEventManager::GetInstance()->QueueEvent(e);
 
-	renderable = false;
-	rigidBody->isAwake = false;
+	CRenderableObject::SetActiveStatus(false);
 	velocity = EnVector3::Zero();
 }
 
@@ -123,6 +122,7 @@ void Asteroid::Init()
 	e->rbType = ColliderType::Sphere;
 	IEventManager::GetInstance()->QueueEvent(e);
 
+	type = EntityType::AsteroidType;
 	size = AsteroidSize::Large;
 	active = false;
 	renderable = false;

@@ -11,6 +11,7 @@ public:
 	~CInput();
 	void Update();
 	void OnEvent(UINT msg, WPARAM wParam, LPARAM lParam);
+	bool Contains(GameKey key);
 private:
 	CInput();
 	static CInput* m_pInstance;

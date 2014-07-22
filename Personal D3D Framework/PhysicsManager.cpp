@@ -5,6 +5,7 @@
 #include "IEventManager.h"
 #include "GameLog.h"
 #include "FileManager.h"
+#include "ScopedTimer.h"
 
 //PhysicsEventReceiver Class
 PhysicsEventReceiver::PhysicsEventReceiver(PhysicsManager* parentPhysics)
@@ -91,11 +92,8 @@ void PhysicsManager::RemoveEntity(Entity* entity)
 
 void PhysicsManager::Update(const float& dt)
 {
-	Entity* curEnt;
-	
-	for (UINT i = 0 ; i < sceneCollideables.size() ; ++i)
+	for (Entity* curEnt : sceneCollideables)
 	{
-		curEnt = sceneCollideables[i];
 		curEnt->rigidBody->centrePoint = curEnt->position;
 		if (curEnt->rigidBody->affectedByGravity == true)
 		{
@@ -131,7 +129,6 @@ void PhysicsManager::CollisionUpdate(const float& dt)
 {
 	//First off, let's begin our coarse collision detection. This tests for only intersections in each frame, no fancy stuff.
 	std::vector<CollisionPair> sceneCollisions = CoarseCollisionDetection(sceneCollideables);
-
 	if (!sceneCollisions.empty())
 	{
 		GenerateContacts(sceneCollisions);
@@ -146,26 +143,34 @@ std::vector<CollisionPair> PhysicsManager::CoarseCollisionDetection(const std::d
 	for (UINT i = 0 ; i < sceneCollideables.size() ; ++i)
 	{
 		curEnt = sceneCollideables[i];
-		for (UINT j = 0 ; j < sceneCollideables.size() ; ++j)
+		for (UINT j = i + 1 ; j < sceneCollideables.size() ; ++j)
 		{
-			if ((i != j) && (curEnt->TestAABBIntersection(sceneCollideables[j]->AABB))) 
+			if (curEnt->type != sceneCollideables[j]->type &&
+				curEnt->TestAABBIntersection(sceneCollideables[j]->AABB))
 			{ //Collision between two entities has occured.
 				if (curEnt->rigidBody->isAwake && sceneCollideables[j]->rigidBody->isAwake)
 				{
-					bool collisionIsUnique = true;
-					for (UINT k = 0 ; k < possibleCollisions.size() ; ++k)
+					if (CheckCollisionIsUnique(possibleCollisions, sceneCollideables[j], curEnt))
 					{
-						if((possibleCollisions[k].a == sceneCollideables[j]) && (possibleCollisions[k].b == curEnt ))
-						{ //Already a collision between these two entities in the system, ignore it.
-							collisionIsUnique = false;
-						}
+						possibleCollisions.push_back(CollisionPair(curEnt, sceneCollideables[j]));
 					}
-					if (collisionIsUnique) { possibleCollisions.push_back(CollisionPair(curEnt, sceneCollideables[j])); }
 				}
 			}
 		}
 	}
 	return possibleCollisions;
+}
+
+inline bool PhysicsManager::CheckCollisionIsUnique(const std::vector<CollisionPair>& collisionList, Entity* a, Entity* b)
+{
+	for (CollisionPair pair : collisionList)
+	{
+		if((pair.a == a) && (pair.b == b ))
+		{ //Already a collision between these two entities in the system, ignore it.
+			return false;
+		}
+	}
+	return true;
 }
 
 void PhysicsManager::GenerateContacts(std::vector<CollisionPair>& coarseCollisions)
@@ -184,10 +189,7 @@ void PhysicsManager::ResolveCollisions(std::vector<CollisionPair>& possibleColli
 	//This only considers the first contact data in the collision pair for the moment.
 	for ( UINT i = 0 ; i < possibleCollisions.size() ; ++i)
 	{
-		if (possibleCollisions[i].data == 0 || 
-			possibleCollisions[i].a->rigidBody->isAwake == false ||
-			possibleCollisions[i].b->rigidBody->isAwake == false) { continue; }
-		if (possibleCollisions[i].a->name == possibleCollisions[i].b->name) { continue; }
+		if (possibleCollisions[i].data == 0) { continue; }
 		Entity* entA = possibleCollisions[i].a;
 		Entity* entB = possibleCollisions[i].b;
 

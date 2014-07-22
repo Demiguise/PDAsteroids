@@ -20,7 +20,6 @@ public:
 	void SetRigidBody(RigidBody* newRB);
 	bool active;
 
-
 private:
 	void Init();
 	void AddListeners();

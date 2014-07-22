@@ -63,6 +63,7 @@ void Entity::Init()
 	e->entity = this;
 	IEventManager::GetInstance()->QueueEvent(e);
 
+	type = EntityType::BasicType;
 	forceAccum = EnVector3::Zero();
 	velocity = EnVector3::Zero();
 	AABB = BoundingBox();
@@ -81,6 +82,11 @@ void Entity::Update()
 	{
 		rigidBody->ReCalculateAABB(AABB);
 	}
+}
+
+void Entity::SetActiveStatus(bool status)
+{
+	rigidBody->isAwake = status;
 }
 
 UINT Entity::GetUID()

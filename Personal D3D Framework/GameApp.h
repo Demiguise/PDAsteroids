@@ -11,6 +11,7 @@ class Player;
 class Timer;
 class Camera;
 class UI;
+class AudioPlayer;
 
 class GameApp
 {
@@ -18,9 +19,9 @@ public:
 	GameApp(HINSTANCE hInstance);
 	~GameApp();
 	int Run();
-	void CreateTestObjects();
 	void LoadAllModels();
 
+private:
 	FileManager* mFileManager;
 	GameWindow* mGameWindow;
 	Renderer* mRenderer;
@@ -28,8 +29,8 @@ public:
 	IEventManager* mEventManager;
 	PhysicsManager* mPhysicsManager;
 	Camera* mCamera;
-	Timer* mTimer;
-	Timer* physicsTimer;
 	Player* m_pPlayer;
+	AudioPlayer* m_pAudio;
+	bool gameRunning;
 };
 

@@ -2,6 +2,8 @@
 #include "renderableobject.h"
 
 #define MAX_PLAYER_PROJECTILES 20
+#define THRUSTVELOCITY 80
+#define ROTATIONSPEED 5.5f
 
 class Projectile;
 
@@ -19,6 +21,8 @@ public:
 	UINT lives;
 	UINT score;
 	UINT curLevel;
+	void SetActiveStatus(bool status);
+
 private:
 	void Init();
 	void AddListeners();
@@ -31,5 +35,6 @@ private:
 	float curInvulTime;
 	float maxReloadTime;
 	float curReloadTime;
+	bool active;
 };
 

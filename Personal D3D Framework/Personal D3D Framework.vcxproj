@@ -52,14 +52,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\boost_1_55_0;C:\Program Files %28x86%29\Awesomium Technologies LLC\Awesomium SDK\1.7.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\boost_1_55_0;C:\Users\Andy\Documents\Visual Studio 2012\Projects\PDAsteroids\Personal D3D Framework\Libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>common.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Effects11d.lib;awesomium.lib;FW1FontWrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Effects11d.lib;FW1FontWrapper.lib;bass.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Andy\Documents\Visual Studio 2012\Projects\PDAsteroids\Personal D3D Framework\Libs;C:\Program Files %28x86%29\Awesomium Technologies LLC\Awesomium SDK\1.7.4.2\build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,6 +86,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="AudioPlayer.h" />
+    <ClInclude Include="bass.h" />
     <ClInclude Include="BufferManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Colliders.h" />
@@ -108,12 +111,14 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="ScopedTimer.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIElements.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="AudioPlayer.cpp" />
     <ClCompile Include="Colliders.cpp" />
     <ClCompile Include="BufferManager.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -136,12 +141,16 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameLog.cpp" />
+    <ClCompile Include="ScopedTimer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIElements.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Effects\color.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\bikehorn.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

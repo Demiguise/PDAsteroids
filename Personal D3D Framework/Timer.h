@@ -15,6 +15,7 @@ public:
 private:
 	float secsPerCount;
 	UINT64 startCount;
-
+	UINT64 endCount;
+	bool running;
 };
 

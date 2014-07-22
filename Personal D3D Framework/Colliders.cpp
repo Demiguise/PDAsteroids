@@ -116,6 +116,7 @@ void SphereCollider::ReCalculateAABB(BoundingBox& curAABB)
 	}
 	curAABB.minPoint = curMin;
 	curAABB.maxPoint = curMax;
+	radius = (centrePoint - curAABB.maxPoint).GetMagnitude();
 }
 
 //Contact Generation

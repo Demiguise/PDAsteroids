@@ -44,9 +44,16 @@ void CRenderableObject::Init()
 	e->eType = "RenderableObject Created";
 	e->entity = this;
 	IEventManager::GetInstance()->QueueEvent(e);
+	type = EntityType::RObjType;
 }
 
 void CRenderableObject::Update()
 {
 	Entity::Update();
+}
+
+void CRenderableObject::SetActiveStatus(bool status)
+{
+	renderable = status;
+	rigidBody->isAwake = status;
 }

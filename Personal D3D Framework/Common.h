@@ -204,7 +204,9 @@ enum GameKey
 	X,
 	Y,
 	Z,
-	SPACE
+	SPACE,
+	ENTER,
+	ESC
 };
 
 //Common Namespaces

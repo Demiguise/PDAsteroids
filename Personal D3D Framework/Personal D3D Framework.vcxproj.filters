@@ -64,6 +64,15 @@
     <Filter Include="Header Files\Rendering\DX11\UI">
       <UniqueIdentifier>{8176cc99-c1dc-4b18-b9f9-478a5253225b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{98c549c4-3276-466d-970c-b06bb17882c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{2e4d0776-6652-4f0c-8ab4-979052160405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio\Sounds">
+      <UniqueIdentifier>{898fd75d-9912-4370-9583-51ba89e2397d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">
@@ -147,6 +156,15 @@
     <ClInclude Include="UIElements.h">
       <Filter>Header Files\Rendering\DX11\UI</Filter>
     </ClInclude>
+    <ClInclude Include="AudioPlayer.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="bass.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="ScopedTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -227,10 +245,21 @@
     <ClCompile Include="UIElements.cpp">
       <Filter>Source Files\Rendering\DX11\UI</Filter>
     </ClCompile>
+    <ClCompile Include="AudioPlayer.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="ScopedTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Effects\color.fx">
       <Filter>Effects</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\bikehorn.wav">
+      <Filter>Source Files\Audio\Sounds</Filter>
+    </Media>
   </ItemGroup>
 </Project>

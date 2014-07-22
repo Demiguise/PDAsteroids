@@ -13,6 +13,7 @@ public:
 	HWND GetMainWHandle();
 	HINSTANCE GetMainHInstance();
 	UINT GetCurrentWindowState();
+	void Update(UINT fps, float fpsTime);
 
 	UINT wHeight;
 	UINT wWidth;

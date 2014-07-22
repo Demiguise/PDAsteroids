@@ -12,6 +12,7 @@ public:
 	~CRenderableObject();
 	
 	void Update();
+	void SetActiveStatus(bool status);
 	bool renderable;
 	ModelData mesh;
 

@@ -81,6 +81,16 @@ void CInput::RemoveActiveKey(GameKey oldKey)
 	}
 }
 
+bool CInput::Contains(GameKey key)
+{
+	for (GameKey activeKey : activeKeys)
+	{
+		if (activeKey == key) { return true; }
+	}
+	//GameLog::GetInstance()->Log(DebugChannel::Main, DebugLevel::Normal, "[Input] Key not found.");
+	return false;
+}
+
 GameKey CInput::TranslateKeyPress(WPARAM wParam)
 {
 	switch(wParam)
@@ -101,5 +111,9 @@ GameKey CInput::TranslateKeyPress(WPARAM wParam)
 		return GameKey::X;
 	case 0x20:
 		return GameKey::SPACE;
+	case 0x0D:
+		return GameKey::ENTER;
+	case 0x1B:
+		return GameKey::ESC;
 	}
 }

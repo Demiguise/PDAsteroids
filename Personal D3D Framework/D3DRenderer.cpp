@@ -2,6 +2,7 @@
 #include "RenderableObject.h"
 #include "GameLog.h"
 #include "UI.h"
+#include "ScopedTimer.h"
 
 //Initialisations
 D3DRenderer::D3DRenderer(HINSTANCE hInstance, HWND hWnd, UINT wHeight, UINT wWidth)
@@ -241,6 +242,7 @@ bool D3DRenderer::OnEvent(Event::IEvent* e)
 
 void D3DRenderer::DrawScene()
 {
+
 	std::vector<packedBufferData> sceneData = mBufferManager->GrabSceneBuffers();
 
 	//float bgColor[4] = {0.69f, 0.77f, 0.87f, 1.0f};

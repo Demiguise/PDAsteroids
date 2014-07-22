@@ -1,6 +1,7 @@
 #include "IEventManager.h"
 #include "Events.h"
 #include "GameLog.h"
+#include "ScopedTimer.h"
 
 typedef std::map<std::string, std::vector<EventReceiver*>>::iterator listenerIT;
 IEventManager* IEventManager::m_pInstance = 0;
@@ -69,7 +70,7 @@ void IEventManager::Update()
 {		
 	//Retrieve all registered listeners for the event type.
 	//Pass event onto all of them. If ANYONE comes back with 'True' the event is consumed and no longer passed on. Breaks from loop and continues on to next statement.
-	//Once complete, DELETE the event from both the queue and memory.
+	//Once complete, DELETE the event from both the queue and memory.	
 	while (!mainEventQueue.empty())
 	{
 		listenerIT lisIT;

@@ -92,6 +92,8 @@ void Projectile::Init()
 	e->rbType = ColliderType::Sphere;
 	IEventManager::GetInstance()->QueueEvent(e);
 
+
+	type = EntityType::ProjectleType;
 	active = false;
 	renderable = false;
 	AddListeners();

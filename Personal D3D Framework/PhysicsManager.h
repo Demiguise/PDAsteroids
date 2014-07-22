@@ -61,6 +61,7 @@ private:
 	void LoadColliders();
 	void ResolveCollisions(std::vector<CollisionPair>& possibleCollisions,const float& dt);
 	std::vector<CollisionPair> CoarseCollisionDetection(const std::deque<Entity*>& availableCollideables);
+	bool CheckCollisionIsUnique(const std::vector<CollisionPair>& collisionList, Entity* a, Entity* b);
 	void GenerateContacts(std::vector<CollisionPair>& coarseCollisions);
 
 	std::deque<Entity*> sceneCollideables;

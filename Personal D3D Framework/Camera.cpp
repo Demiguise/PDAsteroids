@@ -40,6 +40,7 @@ void Camera::Init()
 	debugLockCamera = true;
 	curMousePosition = EnVector2(400.0f, 300.0f);
 	//AddListeners();
+	type = EntityType::CameraType;
 }
 
 

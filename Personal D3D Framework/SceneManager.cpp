@@ -5,6 +5,7 @@
 #include "IEventManager.h"
 #include "Asteroid.h"
 #include "FileManager.h"
+#include "ScopedTimer.h"
 
 //SceneEventReceiver Class
 SceneEventReceiver::SceneEventReceiver(SceneManager* parentScene)
@@ -74,6 +75,10 @@ void SceneManager::UpdateEntities()
 
 void SceneManager::InitLevel()
 {
+	for (Asteroid* a : asteroidPool)
+	{
+		a->SetActiveStatus(false);
+	}
 	float maxAsteroidPos = 20.0f;
 	float minAsteroidPos = 3.0f;
 	for (UINT i = 0 ; i < 10 ; ++i)
@@ -85,12 +90,12 @@ void SceneManager::InitLevel()
 		EnVector3 startPos = EnVector3(startingX, startingY, 0.0f);
 		EnVector3 startVel = EnVector3(Util::RandomFloat(-5.0f, 5.0f), Util::RandomFloat(-5.0f, 5.0f), 0.0f);
 		asteroidPool[i]->OnActivated(startPos, startVel, AsteroidSize::Large);
+		asteroidPool[i]->mesh = FileManager::GetInstance()->LoadModelData("Models/Asteroid1L.line", FileType::LineFile);
 	}
 }
 
 void SceneManager::CheckObjectOnScreen(Entity* ent)
 {
-	UINT i = 10;
 	if (ent->position.x > MAX_X_COORD || ent->position.x < -MAX_X_COORD)
 	{
 		ent->position.x *= -1;

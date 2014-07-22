@@ -27,23 +27,24 @@ GameLog::~GameLog()
 //Always use a _SINGLE_ channel.
 void GameLog::Log(const DebugChannel logChannel,  const DebugLevel logLevel, const char* logLine, ...)
 {
-	if (logLevel <= logVerbosity)
+
+	if (activeChannels&logChannel) //Bitwise 'AND' operation to check for proper channels
 	{
-		if (activeChannels&logChannel) //Bitwise 'AND' check for proper channels
+		char buffer[512];
+		char* newLogLine = AppendNewlineChar(logLine);
+		va_list args;
+		va_start(args, logLine);
+		vsnprintf_s(buffer, 512, newLogLine, args);
+		va_end(args);
+		if (logLevel <= logVerbosity)
 		{
-			char buffer[512];
-			char* newLogLine = AppendNewlineChar(logLine);
-			va_list args;
-			va_start(args, logLine);
-			vsnprintf_s(buffer, 512, newLogLine, args);
-			va_end(args);
 			OutputDebugStringA((LPCSTR)buffer);
-			if (logLevel <= writeToLogVerbosity)
-			{
-				FileManager::GetInstance()->WriteToLog(buffer);
-			}
-			delete newLogLine;
 		}
+		if (logLevel <= writeToLogVerbosity)
+		{
+			FileManager::GetInstance()->WriteToLog(buffer);
+		}
+		delete newLogLine;
 	}
 }
 

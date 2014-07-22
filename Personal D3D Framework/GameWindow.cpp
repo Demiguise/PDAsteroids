@@ -131,3 +131,10 @@ HINSTANCE GameWindow::GetMainHInstance()
 {
 	return mHInstance;
 }
+
+void GameWindow::Update(UINT fps, float fpsTime)
+{
+	wchar_t fpsString[50];
+	swprintf(fpsString, L"PDAsteroids | FPS: %d | FrameTime: %f", fps, fpsTime);
+	SetWindowText(mHWnd, fpsString);
+}
