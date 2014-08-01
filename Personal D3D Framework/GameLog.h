@@ -15,15 +15,15 @@ enum DebugLevel
 //Since it's an int we're using we have 32 possible channels. Sweet!
 enum DebugChannel
 {
-	All = -1,
-	Main = 1,
-	Rendering = 2,
-	Audio = 4,
-	Input = 8,
-	Events = 16,
-	Physics = 32,
-	Unused2 = 64,
-	Unused3 = 128,
+	All = 		-1,
+	Main = 		1 << 0,
+	Rendering = 	1 << 1,
+	Audio = 	1 << 2,
+	Input = 	1 << 3,
+	Events = 	1 << 4,
+	Physics 	1 << 5,
+	Unused2 = 	1 << 6,
+	Unused3 = 	1 << 7,
 };
 
 class GameLog
